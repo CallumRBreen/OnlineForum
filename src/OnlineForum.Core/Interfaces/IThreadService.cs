@@ -5,7 +5,7 @@ using OnlineForum.Core.Models;
 
 namespace OnlineForum.Core.Interfaces
 {
-    interface IThreadService
+    public interface IThreadService
     {
         IEnumerable<Thread> GetThreads();
         Thread GetThread(int threadId);

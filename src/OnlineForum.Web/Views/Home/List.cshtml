@@ -1,0 +1,13 @@
+﻿@model System.Collections.Generic.IEnumerable<OnlineForum.Core.Models.Thread>
+
+@{
+    Layout = "_Layout";
+}
+
+<h2>List Test</h2>
+<ul class="list-group">
+@foreach (var thread in Model)
+{
+    <li class="list-group-item">@thread.ThreadId @thread.Title @thread.Content @thread.Created</li>
+}
+</ul>

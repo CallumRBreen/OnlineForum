@@ -8,7 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OnlineForum.Core.Implementations;
+using OnlineForum.Core.Interfaces;
 using OnlineForum.DAL;
+using OnlineForum.DAL.Entities;
 
 namespace OnlineForum.Web
 {
@@ -32,8 +35,18 @@ namespace OnlineForum.Web
             services.AddDbContext<OnlineForumContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient<IThreadService, ThreadService>();
+
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Thread, Core.Models.Thread>().ReverseMap();
+            });
+
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
+
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc();  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
