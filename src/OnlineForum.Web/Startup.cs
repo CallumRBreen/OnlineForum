@@ -46,7 +46,7 @@ namespace OnlineForum.Web
             services.AddSingleton(mapper);
 
             // Add framework services.
-            services.AddMvc();  
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,7 +71,7 @@ namespace OnlineForum.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Forum}/{action=Index}/{id?}");
             });
 
             DbInitializer.Initialize(context);

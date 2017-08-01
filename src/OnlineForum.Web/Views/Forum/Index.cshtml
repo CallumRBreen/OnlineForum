@@ -1,0 +1,33 @@
+﻿@model System.Collections.Generic.IEnumerable<OnlineForum.Core.Models.Thread>
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="panel">
+    <a asp-controller="Forum" asp-action="Create" class="btn">Create</a>
+</div>
+
+
+@foreach (var thread in Model)
+{
+    <div class="panel panel-default">
+        <div class="panel-body"><p>Title: @thread.Title</p>
+            <p>Content: @thread.Content</p>
+            <p>Created: @thread.Created</p>
+            <p>Modified: @thread.Modified</p>
+        
+    
+            <a asp-action="Edit" asp-route-threadId="@thread.ThreadId" class="btn btn-primary">Edit</a>
+            
+            <form asp-action="Delete" asp-route-threadId="@thread.ThreadId" method="post">
+                <button class="btn btn-danger">Delete</button>
+            </form>
+   
+            
+        </div>
+            
+    </div>
+        
+}
+

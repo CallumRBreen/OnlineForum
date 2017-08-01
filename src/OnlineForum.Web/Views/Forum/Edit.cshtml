@@ -1,0 +1,40 @@
+﻿@model OnlineForum.Core.Models.Thread
+
+@{
+    Layout = "_Layout";
+}
+
+<h3>Edit Thread</h3>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="ThreadId" />
+    <input type="hidden" asp-for="Upvotes" />
+    <input type="hidden" asp-for="Downvotes" />
+    
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Content"></label>
+        <input asp-for="Content" class="form-control" />
+    </div>
+   
+    <div class="form-group">
+        <label asp-for="Created"></label>
+        <input asp-for="Created" class="form-control" readonly />
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Modified"></label>
+        <input asp-for="Modified" class="form-control" readonly />
+    </div>
+    
+    
+    <div class="text-center">
+        <input class="btn btn-primary" type="submit" value="Save" />
+        <a asp-action="Index" class="btn btn-default">Cancel</a>
+    </div>
+   
+</form>

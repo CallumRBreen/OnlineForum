@@ -45,7 +45,9 @@ namespace OnlineForum.Core.Implementations
 
         public void EditThread(Thread thread)
         {
-            _context.Update(thread);
+            var entityThread = _mapper.Map<DAL.Entities.Thread>(thread);
+
+            _context.Threads.Update(entityThread);
             _context.SaveChanges();
         }
 
@@ -64,7 +66,7 @@ namespace OnlineForum.Core.Implementations
 
         public void Downvote(int threadId)
         {
-            _context.Threads.Find(threadId).Upvotes--;
+            _context.Threads.Find(threadId).Downvotes--;
             _context.SaveChanges();
         }
     }
