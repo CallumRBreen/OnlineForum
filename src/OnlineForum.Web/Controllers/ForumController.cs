@@ -20,7 +20,7 @@ namespace OnlineForum.Web.Controllers
 
         public IActionResult Index()
         {
-            return View(_threadService.GetThreads());
+            return View(_threadService.GetThreads().OrderByDescending(t => t.GetScore()));
         }
 
         public IActionResult Edit(int threadId)
@@ -70,6 +70,20 @@ namespace OnlineForum.Web.Controllers
         public IActionResult Delete(int threadId)
         {
             _threadService.DeleteThread(threadId);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Upvote(int threadId)
+        {
+            _threadService.Upvote(threadId);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Downvote(int threadId)
+        {
+            _threadService.Downvote(threadId);
             return RedirectToAction("Index");
         }
     }

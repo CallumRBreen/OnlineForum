@@ -9,7 +9,7 @@ namespace OnlineForum.Core.Interfaces
     {
         IEnumerable<Thread> GetThreads();
         Thread GetThread(int threadId);
-        void CreateThread(Thread thread);
+        int CreateThread(Thread thread);
         void EditThread(Thread thread);
         void DeleteThread(int threadId);
         void Upvote(int threadId);

@@ -13,5 +13,7 @@ namespace OnlineForum.Core.Models
         public DateTime Modified { get; set; }
         public int Upvotes { get; set; }
         public int Downvotes { get; set; }
+
+        public int GetScore() => (Upvotes + Downvotes);
     }
 }

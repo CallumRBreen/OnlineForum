@@ -17,50 +17,28 @@ namespace OnlineForum.DAL
                 return;
             }
 
-            var threads = new List<Thread>()
+            var threads = new List<Thread>();
+
+            for (var i = 1; i <= 50; i++)
             {
-                new Thread()
+                var thread = new Thread
                 {
-                    Title = "This is title 1",
-                    Content = "This is the content, this is the content",
+                    Title = "Title" + i,
+                    Content = "Content" + i,
                     Created = DateTime.Now,
-                    Modified = DateTime.Now
+                    Modified = DateTime.Now,
+                    Upvotes = new Random().Next(1, 100),
+                    Downvotes = new Random().Next(1, 100)
+                };
 
-                },
-                new Thread()
-                {
-                    Title = "This is title 55",
-                    Content = "This is the content, this is the content",
-                    Created = DateTime.Now,
-                    Modified = DateTime.Now
-                },
-                new Thread()
-                {
-                    Title = "This is title 2",
-                    Content = "This is the content, this is the content",
-                    Created = DateTime.Now,
-                    Modified = DateTime.Now
-                },
-                new Thread()
-                {
-                    Title = "This is title 3",
-                    Content = "This is the content, this is the content",
-                    Created = DateTime.Now,
-                    Modified = DateTime.Now
-                },
-                new Thread()
-                {
-                    Title = "This is title 4",
-                    Content = "This is the content, this is the content",
-                    Created = DateTime.Now,
-                    Modified = DateTime.Now
-                }
-            };
+                threads.Add(thread);
 
+            }
+            
             context.Threads.AddRange(threads);
             context.SaveChanges();
 
         }
     }
-    }
+}
 

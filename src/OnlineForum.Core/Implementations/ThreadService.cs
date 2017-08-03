@@ -7,6 +7,9 @@ using AutoMapper;
 using OnlineForum.Core.Interfaces;
 using OnlineForum.Core.Models;
 using OnlineForum.DAL;
+using System.Data;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+
 
 namespace OnlineForum.Core.Implementations
 {
@@ -30,17 +33,21 @@ namespace OnlineForum.Core.Implementations
 
         public Thread GetThread(int threadId)
         {
-            var entityThread = _context.Threads.FirstOrDefault(x => x.ThreadId == threadId);
+            var entityThread = _context.Threads.Find(threadId);
+
+            if (entityThread == null) return null;
 
             return _mapper.Map<Thread>(entityThread);
         }
 
-        public void CreateThread(Thread thread)
+        public int CreateThread(Thread thread)
         {
             var entityThread = _mapper.Map<DAL.Entities.Thread>(thread);
 
             _context.Threads.Add(entityThread);
             _context.SaveChanges();
+
+            return entityThread.ThreadId;
         }
 
         public void EditThread(Thread thread)

@@ -39,7 +39,7 @@ namespace OnlineForum.Web
 
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Thread, Core.Models.Thread>().ReverseMap();
+                cfg.AddProfiles("OnlineForum.Core");
             });
 
             var mapper = config.CreateMapper();
