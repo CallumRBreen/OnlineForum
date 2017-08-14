@@ -1,5 +1,17 @@
 ﻿
+.threadTitle{
+    font-size: 24px;
+}
 
-form {
-    font-size: 0;
+.threadContent{
+    height: 150px;
+}
+
+.threadRatingSection{
+    width:60px;
+}
+
+.score{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

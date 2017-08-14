@@ -36,6 +36,16 @@ namespace OnlineForum.DAL
             }
             
             context.Threads.AddRange(threads);
+
+            var user = new User
+            {
+                UserName = "TestUser",
+                PasswordHash = "$2b$10$qk5Kn8tGXmVVoJYRw4S7UuttlPlNH6sQWEDCCieObLamPVFR94lAW",
+                Email = "TestEmail@Test.com"
+            };
+
+            context.Users.Add(user);
+
             context.SaveChanges();
 
         }

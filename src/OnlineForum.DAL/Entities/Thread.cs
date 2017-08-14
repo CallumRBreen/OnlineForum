@@ -13,5 +13,7 @@ namespace OnlineForum.DAL.Entities
         public DateTime Modified { get; set; }
         public int Upvotes { get; set; }
         public int Downvotes { get; set; }
+
+        public User User { get; set; }
     }
 }

@@ -11,13 +11,11 @@ using OnlineForum.DAL.Entities;
 namespace OnlineForum.Core.Tests
 {
     [TestFixture]
-    class ThreadServiceTests
+    class ThreadServiceTests : TestBase
     {
         [Test]
-        public void ThreadCreateSuccessful()
+        public void ThreadCreateSuccess()
         {
-            IntialiseTestData();
-
             using (var context = GetNewContext())
             {
                 var threadService = GetThreadService(context);
@@ -37,10 +35,8 @@ namespace OnlineForum.Core.Tests
         }
 
         [Test]
-        public void ThreadDeleteSuccessful()
+        public void ThreadDeleteSuccess()
         {
-            IntialiseTestData();
-
             using (var context = GetNewContext())
             {
                 var threadService = GetThreadService(context);
@@ -52,10 +48,8 @@ namespace OnlineForum.Core.Tests
         }
 
         [Test]
-        public void ThreadEditSuccessful()
+        public void ThreadEditSuccess()
         {
-            IntialiseTestData();
-
             Models.Thread uneditedThread;
 
             using (var context = GetNewContext())
@@ -91,46 +85,13 @@ namespace OnlineForum.Core.Tests
             }
         }
 
-        private static void IntialiseTestData()
-        {
-            using (var context = GetNewContext())
-            {
-                DbInitializer.Initialize(context);
-            }
-        }
-
-        private static OnlineForumContext GetNewContext()
-        {
-            var options = GetOptions();
-            
-            var context = new OnlineForumContext(options);
-
-            return context;
-        }
-
-        public static ThreadService GetThreadService(OnlineForumContext context)
+        private static ThreadService GetThreadService(OnlineForumContext context)
         {
             var mapper = GetMapper();
 
             var threadService = new ThreadService(context, mapper);
 
             return threadService;
-        }
-
-        private static IMapper GetMapper()
-        {
-            var config = new AutoMapper.MapperConfiguration(cfg => { cfg.AddProfiles("OnlineForum.Core"); });
-
-            return config.CreateMapper();
-        }
-
-        private static DbContextOptions<OnlineForumContext> GetOptions()
-        {
-            var options = new DbContextOptionsBuilder<OnlineForumContext>()
-                .UseInMemoryDatabase(databaseName: "ThreadServiceTestsDatabase")
-                .Options;
-
-            return options;
         }
     }
 }

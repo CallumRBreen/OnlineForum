@@ -14,6 +14,6 @@ namespace OnlineForum.Core.Models
         public int Upvotes { get; set; }
         public int Downvotes { get; set; }
 
-        public int GetScore() => (Upvotes + Downvotes);
+        public int GetScore() => Upvotes + Downvotes;
     }
 }

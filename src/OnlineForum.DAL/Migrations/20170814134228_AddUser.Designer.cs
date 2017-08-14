@@ -8,9 +8,10 @@ using OnlineForum.DAL;
 namespace OnlineForum.DAL.Migrations
 {
     [DbContext(typeof(OnlineForumContext))]
-    partial class OnlineForumContextModelSnapshot : ModelSnapshot
+    [Migration("20170814134228_AddUser")]
+    partial class AddUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -49,13 +50,11 @@ namespace OnlineForum.DAL.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<string>("PasswordHash");
-
                     b.Property<string>("UserName");
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("OnlineForum.DAL.Entities.Thread", b =>

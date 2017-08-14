@@ -10,8 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OnlineForum.Core.Implementations;
 using OnlineForum.Core.Interfaces;
+using OnlineForum.Core.Models;
 using OnlineForum.DAL;
-using OnlineForum.DAL.Entities;
+
 
 namespace OnlineForum.Web
 {
@@ -36,17 +37,15 @@ namespace OnlineForum.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<IThreadService, ThreadService>();
+            services.AddTransient<IUserService, UserService>();
 
-            var config = new AutoMapper.MapperConfiguration(cfg =>
-            {
-                cfg.AddProfiles("OnlineForum.Core");
-            });
+            var config = new AutoMapper.MapperConfiguration(cfg => cfg.AddProfiles("OnlineForum.Core"));
 
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
 
-            // Add framework services.
             services.AddMvc();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
