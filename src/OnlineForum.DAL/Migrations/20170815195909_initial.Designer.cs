@@ -8,8 +8,8 @@ using OnlineForum.DAL;
 namespace OnlineForum.DAL.Migrations
 {
     [DbContext(typeof(OnlineForumContext))]
-    [Migration("20170814134228_AddUser")]
-    partial class AddUser
+    [Migration("20170815195909_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,11 +50,16 @@ namespace OnlineForum.DAL.Migrations
 
                     b.Property<string>("Email");
 
+                    b.Property<string>("PasswordHash");
+
                     b.Property<string>("UserName");
 
                     b.HasKey("UserId");
 
-                    b.ToTable("User");
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("OnlineForum.DAL.Entities.Thread", b =>

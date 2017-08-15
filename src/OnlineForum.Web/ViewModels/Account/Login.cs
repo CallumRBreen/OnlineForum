@@ -1,23 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace OnlineForum.Core.Models
+namespace OnlineForum.Web.ViewModels.Account
 {
-    /// <summary>
-    /// The user.
-    /// </summary>
-    public class User
+    public class Login
     {
-        public int UserId { get; set; }
-
         [Required(ErrorMessage = "Please enter a username.")]
-        public string UserName { get; set; }
-
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-
+        public string Username { get; set; }
         [Required(ErrorMessage = "Please enter a password.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }

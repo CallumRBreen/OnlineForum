@@ -11,7 +11,13 @@ namespace OnlineForum.DAL
     {
         public OnlineForumContext(DbContextOptions<OnlineForumContext> options) : base(options)
         {
-            
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<User>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
         }
 
         public DbSet<Thread> Threads { get; set; }

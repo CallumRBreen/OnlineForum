@@ -38,7 +38,7 @@ namespace OnlineForum.Core.Implementations
             return _mapper.Map<User>(user);
         }
 
-        public int CreateUser(string username, string password, string email)
+        public int CreateUser(string username, string password, string email) // Add enum, with response type e.g. successful, user already exists
         {
             var user = new DAL.Entities.User
             {

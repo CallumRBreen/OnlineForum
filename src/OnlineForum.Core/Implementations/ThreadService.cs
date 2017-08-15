@@ -54,6 +54,8 @@ namespace OnlineForum.Core.Implementations
         {
             var entityThread = _mapper.Map<DAL.Entities.Thread>(thread);
 
+            if (entityThread == null) return;
+
             _context.Threads.Update(entityThread);
             _context.SaveChanges();
         }
@@ -61,19 +63,30 @@ namespace OnlineForum.Core.Implementations
         public void DeleteThread(int threadId)
         {
             var threadToDelete = _context.Threads.Find(threadId);
+
+            if (threadToDelete == null) return;
+
             _context.Threads.Remove(threadToDelete);
             _context.SaveChanges();
         }
 
         public void Upvote(int threadId)
         {
-            _context.Threads.Find(threadId).Upvotes++;
+            var entityThread = _context.Threads.Find(threadId);
+
+            if (entityThread == null) return;
+
+            entityThread.Upvotes++;
             _context.SaveChanges();
         }
 
         public void Downvote(int threadId)
         {
-            _context.Threads.Find(threadId).Downvotes--;
+            var entityThread = _context.Threads.Find(threadId);
+
+            if (entityThread == null) return;
+
+            entityThread.Downvotes++;
             _context.SaveChanges();
         }
     }

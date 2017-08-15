@@ -19,6 +19,8 @@ namespace OnlineForum.DAL
 
             var threads = new List<Thread>();
 
+            var random = new Random();
+
             for (var i = 1; i <= 50; i++)
             {
                 var thread = new Thread
@@ -27,8 +29,8 @@ namespace OnlineForum.DAL
                     Content = "Content" + i,
                     Created = DateTime.Now,
                     Modified = DateTime.Now,
-                    Upvotes = new Random().Next(1, 100),
-                    Downvotes = new Random().Next(1, 100)
+                    Upvotes = random.Next(1, 100),
+                    Downvotes = random.Next(1, 100)
                 };
 
                 threads.Add(thread);

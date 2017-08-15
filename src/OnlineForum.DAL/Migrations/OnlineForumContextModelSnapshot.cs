@@ -55,6 +55,9 @@ namespace OnlineForum.DAL.Migrations
 
                     b.HasKey("UserId");
 
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
                     b.ToTable("Users");
                 });
 
