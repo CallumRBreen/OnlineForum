@@ -15,16 +15,20 @@ namespace OnlineForum.Core.Models
         [Required(ErrorMessage = "Please enter content.")]
         public string Content { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy HH:mm}")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime Created { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy HH:mm}")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime Modified { get; set; }
 
         public int Upvotes { get; set; }
 
         public int Downvotes { get; set; }
 
-        public int GetScore() => Upvotes + Downvotes;
+        public int GetScore() => Upvotes - Downvotes;
+
+        public User User { get; set; }
     }
 }

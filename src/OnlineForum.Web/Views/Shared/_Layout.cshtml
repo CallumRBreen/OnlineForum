@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Online Forum</title>
@@ -15,9 +17,12 @@
 </head>
 <body>
     
+@inject IAuthorizationService AuthorizationService
+
 <div class="container">
   
     <h1>Online Forum</h1>
+    <p>Welcome </p>
 
 
     @RenderBody()

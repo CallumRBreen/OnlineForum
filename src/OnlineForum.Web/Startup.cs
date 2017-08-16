@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,12 +42,18 @@ namespace OnlineForum.Web
             services.AddTransient<IThreadService, ThreadService>();
             services.AddTransient<IUserService, UserService>();
 
-            var config = new AutoMapper.MapperConfiguration(cfg => cfg.AddProfiles("OnlineForum.Core"));
+            var mapperConfig = new AutoMapper.MapperConfiguration(cfg => cfg.AddProfiles("OnlineForum.Core"));
 
-            var mapper = config.CreateMapper();
+            var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddMvc();
+            services.AddMvc(config =>  
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
 
         }
 
@@ -53,6 +62,16 @@ namespace OnlineForum.Web
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = "CookieAuthentication",
+                LoginPath = new PathString("/Account/Login"),
+                AccessDeniedPath = new PathString("/Account/Forbidden/"),
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true
+            });
+
 
             if (env.IsDevelopment())
             {
@@ -66,11 +85,14 @@ namespace OnlineForum.Web
 
             app.UseStaticFiles();
 
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Forum}/{action=Index}/{id?}");
+
+                
             });
 
             DbInitializer.Initialize(context);

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OnlineForum.Core.Interfaces;
@@ -13,28 +15,28 @@ namespace OnlineForum.Web.Controllers
     public class ForumController : Controller
     {
         private readonly IThreadService _threadService;
+        private readonly IUserService _userService;
 
-        public ForumController(IThreadService threadService)
+        public ForumController(IThreadService threadService, IUserService userService)
         {
             _threadService = threadService;
+            _userService = userService;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View(_threadService.GetThreads().OrderByDescending(t => t.GetScore()));
         }
 
-        public IActionResult Edit(int threadId)
-        {
-            return View(_threadService.GetThread(threadId));
-        }
+        [HttpGet]
+        public IActionResult Edit(int threadId) => View(_threadService.GetThread(threadId));
 
         [HttpPost]
         public IActionResult Edit(Thread thread)
         {
             if (ModelState.IsValid)
             {
-                thread.Modified = DateTime.Now;
                 _threadService.EditThread(thread);
                 return RedirectToAction("Index");
             }
@@ -44,6 +46,7 @@ namespace OnlineForum.Web.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -54,10 +57,10 @@ namespace OnlineForum.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                thread.Created = DateTime.Now;
-                thread.Modified = DateTime.Now;
-                thread.Downvotes = 0;
-                thread.Upvotes = 0;
+                var user = _userService.GetUser(GetCurrentUserId());
+
+                thread.User = user;
+
                 _threadService.CreateThread(thread);
                 return RedirectToAction("Index");
             }
@@ -86,6 +89,11 @@ namespace OnlineForum.Web.Controllers
         {
             _threadService.Downvote(threadId);
             return RedirectToAction("Index");
+        }
+
+        private int GetCurrentUserId()
+        {
+            return Convert.ToInt32(HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value);
         }
     }
 }

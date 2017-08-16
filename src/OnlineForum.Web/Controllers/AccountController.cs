@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OnlineForum.Core.Interfaces;
@@ -11,6 +13,7 @@ using OnlineForum.Web.ViewModels.Account;
 
 namespace OnlineForum.Web.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
@@ -26,15 +29,22 @@ namespace OnlineForum.Web.Controllers
         public IActionResult Login() => View();
 
         [HttpPost]
-        public IActionResult Login(Login userLogin)
+        public async Task<IActionResult> Login(Login userLogin)
         {
             if (ModelState.IsValid)
             {
-                var result = _userService.SignIn(userLogin.Username, userLogin.Password);
+                var user = _userService.SignIn(userLogin.Username, userLogin.Password);
 
-                if (result)
+                if (user != null)
                 {
-                    // do cookie stuff
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, userLogin.Username),
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+                    };
+ 
+                    ClaimsPrincipal principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "login"));
+                    await HttpContext.Authentication.SignInAsync("CookieAuthentication", principal);
                 }
                 else
                 {
@@ -47,6 +57,13 @@ namespace OnlineForum.Web.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.Authentication.SignOutAsync("CookieAuthentication");
+            return RedirectToAction("Login");
         }
 
         [HttpGet]

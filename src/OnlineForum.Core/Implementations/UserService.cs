@@ -53,12 +53,12 @@ namespace OnlineForum.Core.Implementations
             return user.UserId;
         }
 
-        public bool SignIn(string username, string password)
+        public User SignIn(string username, string password)
         {
             var foundUser = _context.Users.FirstOrDefault(x => x.UserName.Equals(username) 
                                            && BCrypt.Net.BCrypt.Verify(password, x.PasswordHash));
 
-            return foundUser != null;
+            return _mapper.Map<User>(foundUser);
         }
 
         private string GetPasswordHash(string password)

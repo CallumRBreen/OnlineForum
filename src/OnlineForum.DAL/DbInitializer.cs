@@ -17,28 +17,6 @@ namespace OnlineForum.DAL
                 return;
             }
 
-            var threads = new List<Thread>();
-
-            var random = new Random();
-
-            for (var i = 1; i <= 50; i++)
-            {
-                var thread = new Thread
-                {
-                    Title = "Title" + i,
-                    Content = "Content" + i,
-                    Created = DateTime.Now,
-                    Modified = DateTime.Now,
-                    Upvotes = random.Next(1, 100),
-                    Downvotes = random.Next(1, 100)
-                };
-
-                threads.Add(thread);
-
-            }
-            
-            context.Threads.AddRange(threads);
-
             var user = new User
             {
                 UserName = "TestUser",
@@ -47,7 +25,32 @@ namespace OnlineForum.DAL
             };
 
             context.Users.Add(user);
+            context.SaveChanges();
 
+            var threads = new List<Thread>();
+
+            var random = new Random();
+
+            for (var i = 1; i <= 25; i++)
+            {
+                var thread = new Thread
+                {
+                    Title = "Title" + i,
+                    Content = "Content" + i,
+                    Created = DateTime.Now,
+                    Modified = DateTime.Now,
+                    Upvotes = random.Next(1, 100),
+                    Downvotes = random.Next(1, 100),
+                    User = user
+                };
+
+                threads.Add(thread);
+
+            }
+            
+            context.Threads.AddRange(threads);
+
+            
             context.SaveChanges();
 
         }

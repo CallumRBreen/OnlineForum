@@ -33,7 +33,20 @@ namespace OnlineForum.Core.Tests
 
                 var result = userService.SignIn("TestUser", "TestPassword123");
 
-                Assert.IsTrue(result);
+                Assert.IsNotNull(result);
+            }
+        }
+
+        [Test]
+        public void SignInFailure()
+        {
+            using (var context = GetNewContext())
+            {
+                var userService = GetUserService(context);
+
+                var result = userService.SignIn("asdasdasdas", "TestPadasdasdasdassssword123");
+
+                Assert.IsNull(result);
             }
         }
 

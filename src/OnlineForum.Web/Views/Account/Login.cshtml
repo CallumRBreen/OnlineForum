@@ -3,7 +3,11 @@
 @{
     Layout = "_Layout";
 }
-<h3>Login</h3>
+<h3>
+    Login
+        <a asp-action="Register" class="btn btn-link">Sign Up</a>
+</h3>
+
 
 <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -20,7 +24,7 @@
     </div>
 
     <div class="text-center">
-        <input class="btn btn-primary" type="submit" value="Create" />
+        <input class="btn btn-primary" type="submit" value="Login" />
         <a asp-action="Index" class="btn btn-default">Cancel</a>
     </div>
 

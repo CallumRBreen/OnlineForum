@@ -11,6 +11,6 @@ namespace OnlineForum.Core.Interfaces
         IEnumerable<User> GetUsers();
         User GetUser(int userId);
         int CreateUser(string username, string password, string email);
-        bool SignIn(string username, string password);
+        User SignIn(string username, string password);
     }
 }
