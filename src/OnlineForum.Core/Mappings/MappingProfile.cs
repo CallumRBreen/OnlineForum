@@ -16,6 +16,9 @@ namespace OnlineForum.Core.Mappings
             CreateMap<DAL.Entities.User, Core.Models.User>()
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
                 .ReverseMap();
+
+            CreateMap<DAL.Entities.Comment, Core.Models.Comment>()
+                .ReverseMap();
         }
     }
 }
