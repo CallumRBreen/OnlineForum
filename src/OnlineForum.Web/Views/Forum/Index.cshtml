@@ -40,8 +40,8 @@
                 </div>
 
                 <div class="col-md-8">
-                    <div class="row threadTitle">
-                        @thread.Title
+                    <div class="row threadTitle">     
+                        <a asp-controller="Comment" asp-action="Comments" asp-route-threadId="@thread.ThreadId">@thread.Title</a>
                     </div>
                     <div class="row">
                         @thread.Content

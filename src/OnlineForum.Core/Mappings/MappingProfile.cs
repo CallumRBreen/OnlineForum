@@ -18,6 +18,9 @@ namespace OnlineForum.Core.Mappings
                 .ReverseMap();
 
             CreateMap<DAL.Entities.Comment, Core.Models.Comment>()
+                .ForMember(dest => dest.Thread, opt => opt.MapFrom(src => src.Thread))
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
+                .ForMember(dest => dest.Parent, opt => opt.MapFrom(src => src.Parent))
                 .ReverseMap();
         }
     }

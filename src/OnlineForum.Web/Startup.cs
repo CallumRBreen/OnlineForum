@@ -41,6 +41,7 @@ namespace OnlineForum.Web
 
             services.AddTransient<IThreadService, ThreadService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICommentService, CommentService>();
 
             var mapperConfig = new AutoMapper.MapperConfiguration(cfg => cfg.AddProfiles("OnlineForum.Core"));
 

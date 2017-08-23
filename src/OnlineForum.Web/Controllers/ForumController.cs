@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OnlineForum.Core.Interfaces;
 using OnlineForum.Core.Models;
+using OnlineForum.Web.Utility;
 
 
 namespace OnlineForum.Web.Controllers
@@ -57,11 +58,10 @@ namespace OnlineForum.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _userService.GetUser(GetCurrentUserId());
-
-                thread.User = user;
+                thread.User = _userService.GetUser(HttpContext.GetCurrentUserId());
 
                 _threadService.CreateThread(thread);
+
                 return RedirectToAction("Index");
             }
             else
@@ -91,9 +91,6 @@ namespace OnlineForum.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        private int GetCurrentUserId()
-        {
-            return Convert.ToInt32(HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value);
-        }
+        
     }
 }

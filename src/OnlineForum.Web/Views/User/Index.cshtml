@@ -1,0 +1,13 @@
+﻿@model System.Collections.Generic.IEnumerable<OnlineForum.Core.Models.User>
+
+@{
+    Layout = "_Layout";
+}
+
+@foreach (var user in Model)
+{
+    <p>@user.UserName</p>
+}
+
+
+

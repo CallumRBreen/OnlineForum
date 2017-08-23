@@ -23,13 +23,14 @@ namespace OnlineForum.Web.Controllers
             _userService = userService;
         }
 
-        public IActionResult Index() => View(_userService.GetUsers());
+        [HttpGet]
+        public IActionResult Index() => RedirectToAction("Index", "Forum");
 
         [HttpGet]
         public IActionResult Login() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Login(Login userLogin)
+        public async Task<IActionResult> Login(LoginViewModel userLogin)
         {
             if (ModelState.IsValid)
             {
@@ -45,13 +46,13 @@ namespace OnlineForum.Web.Controllers
  
                     ClaimsPrincipal principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "login"));
                     await HttpContext.Authentication.SignInAsync("CookieAuthentication", principal);
+
+                    return RedirectToAction("Index");
                 }
                 else
                 {
-                    RedirectToAction("Forbidden");
+                    return RedirectToAction("Forbidden");
                 }
-
-                return RedirectToAction("Index");
             }
             else
             {
@@ -85,6 +86,9 @@ namespace OnlineForum.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Forbidden() => View();
+        public IActionResult Forbidden()
+        {
+            return View();
+        }
     }
 }

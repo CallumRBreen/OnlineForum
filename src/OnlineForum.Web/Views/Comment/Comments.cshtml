@@ -1,0 +1,16 @@
+@model System.Collections.Generic.IEnumerable<OnlineForum.Core.Models.CommentNode>
+
+@{
+    Layout = "_Layout";
+}
+
+<h3>Comments</h3>
+
+<a asp-action="Add" asp-route-parentId="0" asp-route-threadId="@ViewBag.threadId" class="btn btn-link">Add New</a>
+
+@foreach (var commentNode in Model)
+{
+    <li>
+        @Html.Partial("_Comment", commentNode)
+    </li>
+}

@@ -1,0 +1,23 @@
+﻿@model OnlineForum.Core.Models.CommentNode
+
+
+@Model.Comment.Content
+
+<a asp-action="Add" asp-route-parentId="@Model.Comment.CommentId" asp-route-threadId="@Model.Comment.Thread.ThreadId" class="btn btn-link">Reply</a>
+
+@if (Model.ChildComments.Any())
+{
+    <ul>
+        @foreach (var childComment in Model.ChildComments)
+        {
+            <li>
+                @Html.Partial("_Comment", childComment)
+            </li>
+        }
+    </ul>
+}
+
+
+
+
+

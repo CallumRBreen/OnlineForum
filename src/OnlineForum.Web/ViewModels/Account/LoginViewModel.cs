@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineForum.Web.ViewModels.Account
 {
-    public class Login
+    public class LoginViewModel
     {
         [Required(ErrorMessage = "Please enter a username.")]
         public string Username { get; set; }
