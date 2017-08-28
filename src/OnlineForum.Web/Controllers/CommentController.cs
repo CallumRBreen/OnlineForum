@@ -27,9 +27,16 @@ namespace OnlineForum.Web.Controllers
         [HttpGet]
         public IActionResult Comments(int threadId)
         {
-            ViewBag.threadId = threadId;
+            var thread = _threadService.GetThread(threadId);
 
-            return View(_commentService.GetComments(threadId));
+            var commentsViewModel = new CommentsViewModel()
+            {
+                Thread = thread,
+                Comments = _commentService.GetComments(threadId)
+
+            };
+
+            return View(commentsViewModel);
         }
 
         [HttpGet]

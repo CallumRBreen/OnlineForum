@@ -3,8 +3,9 @@
     font-size: 24px;
 }
 
-.threadContent{
-    height: 150px;
+.threadContent {
+    width: 95%;
+    word-wrap: break-word;
 }
 
 .threadRatingSection{

@@ -27,14 +27,17 @@ namespace OnlineForum.Core.Implementations
 
         public IEnumerable<Thread> GetThreads()
         {
-            var entityThreads = _context.Threads.Include(t => t.User).ToList(); // Can change this once EF includes lazy loading
+            var entityThreads = _context.Threads.Include(u => u.User)
+                                                .Include(c => c.Comments);
 
             return _mapper.Map<IEnumerable<Thread>>(entityThreads);
         }
 
         public Thread GetThread(int threadId)
         {
-            var entityThread = _context.Threads.Include(t => t.User).FirstOrDefault(x => x.ThreadId == threadId);
+            var entityThread = _context.Threads.Include(u => u.User)
+                                               .Include(c => c.Comments)
+                                               .FirstOrDefault(x => x.ThreadId == threadId);
 
             if (entityThread == null) return null;
 
@@ -72,10 +75,12 @@ namespace OnlineForum.Core.Implementations
 
         public void DeleteThread(int threadId)
         {
-            var threadToDelete = _context.Threads.Find(threadId);
+            var threadToDelete = _context.Threads.Include(c => c.Comments)
+                                                 .FirstOrDefault(x => x.ThreadId == threadId);
 
             if (threadToDelete == null) return;
 
+            threadToDelete.Comments.ForEach(x => _context.Remove(x));
             _context.Threads.Remove(threadToDelete);
             _context.SaveChanges();
         }

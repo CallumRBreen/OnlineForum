@@ -1,21 +1,39 @@
 ﻿@model OnlineForum.Core.Models.CommentNode
 
+<ul class="list-group">
+    <li class="list-group-item">
+        
+        <p>
+            @Model.Comment.Content
+            <small>
+                @DateTime.Now.Subtract(Model.Comment.Created).Humanize() ago
+            </small>
+        </p>
+        
 
-@Model.Comment.Content
 
-<a asp-action="Add" asp-route-parentId="@Model.Comment.CommentId" asp-route-threadId="@Model.Comment.Thread.ThreadId" class="btn btn-link">Reply</a>
+        <a asp-action="Add" asp-route-parentId="@Model.Comment.CommentId" asp-route-threadId="@Model.Comment.Thread.ThreadId" class="btn btn-link">
+            <small>Reply</small>
+        </a>
 
-@if (Model.ChildComments.Any())
-{
-    <ul>
-        @foreach (var childComment in Model.ChildComments)
+
+        @if (Model.ChildComments.Any())
         {
-            <li>
+
+            foreach (var childComment in Model.ChildComments)
+            {
+
                 @Html.Partial("_Comment", childComment)
-            </li>
+            }
         }
-    </ul>
-}
+
+    </li>
+</ul>
+
+
+
+
+
 
 
 

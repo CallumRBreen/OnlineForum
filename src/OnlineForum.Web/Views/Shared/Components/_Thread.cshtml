@@ -1,0 +1,64 @@
+﻿@model OnlineForum.Core.Models.Thread
+
+
+<div class="panel panel-default">
+    <div class="panel-body">
+           
+        <div class="row">
+
+            <div class="col-md-2 text-center threadRatingSection">
+
+                <div class="row text-center">
+                    <form asp-controller="Forum" asp-action="Upvote" asp-route-threadId="@Model.ThreadId" method="post">
+                        <button class="btn btn-primary">
+                            <span class="glyphicon glyphicon-arrow-up"></span>
+                        </button>
+                    </form>
+                </div>
+                    
+                <div class="row score">
+                    @Model.GetScore()
+                </div>
+
+                <div class="row text-center">
+                    <form asp-controller="Forum" asp-action="Downvote" asp-route-threadId="@Model.ThreadId" method="post">
+                        <button class="btn btn-primary">
+                            <span class="glyphicon glyphicon-arrow-down"></span>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="col-md-8">
+                <div class="row threadTitle">     
+                    <a  asp-controller="Comment" asp-action="Comments" asp-route-threadId="@Model.ThreadId">@Model.Title</a>
+                </div>
+                <div class="row threadContent">
+                    @Model.Content
+                </div>
+                <div class="row">
+                    <small>Submitted @DateTime.Now.Subtract(@Model.Created).Humanize() ago by @Model.User.UserName</small>
+                </div>
+                <div class="row">
+                    <a asp-controller="Comment" asp-action="Comments" asp-route-threadId="@Model.ThreadId"><small>@Model.Comments.Count() Comments</small></a>       
+                    <a asp-controller="Forum" asp-action="Edit" asp-route-threadId="@Model.ThreadId" class="btn btn-link"><small>Edit</small></a>
+                </div>
+            </div>
+
+            <div class="col-md-2 ">
+                <div class="row">
+                    
+                </div>
+                <div class="row">
+                    <form asp-controller="Forum" asp-action="Delete" asp-route-threadId="@Model.ThreadId" method="post">
+                        <button class="btn btn-danger glyphicon glyphicon-remove"></button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

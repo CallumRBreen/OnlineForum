@@ -8,9 +8,10 @@ using OnlineForum.DAL;
 namespace OnlineForum.DAL.Migrations
 {
     [DbContext(typeof(OnlineForumContext))]
-    partial class OnlineForumContextModelSnapshot : ModelSnapshot
+    [Migration("20170828162129_AddCommentsLinkToThreads")]
+    partial class AddCommentsLinkToThreads
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
