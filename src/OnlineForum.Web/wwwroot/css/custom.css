@@ -1,15 +1,55 @@
-﻿
+﻿.header {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.header .topright {
+    float: right;
+    font-size: 16px;
+}
+
+h1 {
+    float: left;
+    padding: 0px;
+    margin: 0px;
+    font-size: 55px;
+    line-height: 70%;
+}
+
 .threadTitle{
     font-size: 24px;
 }
 
 .threadContent {
-    width: 95%;
+    width: 100%;
     word-wrap: break-word;
 }
 
-.threadRatingSection{
-    width:60px;
+.threadContentAll {
+    width: 95%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-bottom: 5px;
+}
+
+.threadRatingSection {
+    width: 60px;
+    text-align: center;
+}
+
+.commentHeader {
+    font-size: 8px;
+}
+
+.commentContent {
+    word-wrap: break-word;
+}
+
+.commentFooter {
+    padding-top: 5px;
+    font-size: 8px;
+    padding-bottom: 10px;
 }
 
 .score{
@@ -24,4 +64,9 @@
 .input-validation-error {
     border: 1px solid #f00;
     background-color: #fee;
+}
+
+
+.row {
+    margin-right: 0px;
 }

@@ -1,21 +1,22 @@
 ﻿@model OnlineForum.Core.Models.CommentNode
 
 <ul class="list-group">
-    <li class="list-group-item">
+    <li class="list-group-item" >
         
-        <p>
+        <div class="commentHeader">
+            Submitted @DateTime.Now.Subtract(@Model.Comment.Created).Humanize() ago by @Model.Comment.User.UserName
+        </div>
+
+        <div class="commentContent">
             @Model.Comment.Content
-            <small>
-                @DateTime.Now.Subtract(Model.Comment.Created).Humanize() ago
-            </small>
-        </p>
-        
-
-
-        <a asp-action="Add" asp-route-parentId="@Model.Comment.CommentId" asp-route-threadId="@Model.Comment.Thread.ThreadId" class="btn btn-link">
-            <small>Reply</small>
-        </a>
-
+        </div>
+            
+        <div class="commentFooter">
+            <a asp-action="Add" asp-route-parentId="@Model.Comment.CommentId" asp-route-threadId="@Model.Comment.Thread.ThreadId">
+                Reply
+            </a>
+        </div>
+            
 
         @if (Model.ChildComments.Any())
         {

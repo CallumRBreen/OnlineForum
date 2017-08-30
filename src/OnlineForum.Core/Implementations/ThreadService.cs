@@ -85,6 +85,7 @@ namespace OnlineForum.Core.Implementations
             _context.SaveChanges();
         }
 
+        // add validation so user can only vote once
         public void Upvote(int threadId)
         {
             var entityThread = _context.Threads.Find(threadId);

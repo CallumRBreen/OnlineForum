@@ -18,8 +18,8 @@
     </div>
 
     <div class="text-center">
-        <input class="btn btn-primary" type="submit" value="Create"/>
-        <a asp-action="Index" class="btn btn-default">Cancel</a>
+        <input class="btn btn-primary" type="submit" value="Add"/>
+        <a asp-controller="Comment" asp-action="Comments" asp-route-threadId="@Model.ThreadId" class="btn btn-default">Cancel</a>
     </div>
 
 </form>

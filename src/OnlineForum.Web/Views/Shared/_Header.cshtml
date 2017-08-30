@@ -1,0 +1,32 @@
+﻿
+
+<div class="header">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Online Forum</h1>
+        </div>
+        <div class="col-md-6">
+        
+            <div class="topright">
+                
+                @if (@User.Identity.IsAuthenticated)
+                {
+                    <div>
+                        Hello <a asp-controller="User" asp-action="Profile">@User.Identity.Name</a>
+                    </div>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-link">Sign Up</a>
+                    <a asp-controller="Account"asp-action="Login" class="btn btn-link">Login</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+ 
+

@@ -78,17 +78,15 @@ namespace OnlineForum.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Upvote(int threadId)
+        public void Upvote(int threadId)
         {
             _threadService.Upvote(threadId);
-            return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult Downvote(int threadId)
+        public void Downvote(int threadId)
         {
             _threadService.Downvote(threadId);
-            return RedirectToAction("Index");
         }
 
         

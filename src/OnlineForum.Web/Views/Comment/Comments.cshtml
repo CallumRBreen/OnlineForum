@@ -1,10 +1,11 @@
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
 @model OnlineForum.Web.ViewModels.Comment.CommentsViewModel
 
 @{
     Layout = "_Layout";
 }
 
-@Html.Partial("Components/_Thread", @Model.Thread)
+@Html.Partial("Components/_Thread", @Model.Thread, new ViewDataDictionary(ViewData) { { "ShowFullContent", true } })
 
 <p>Comments <a asp-action="Add" asp-route-parentId="0" asp-route-threadId="@Model.Thread.ThreadId" class="btn btn-link">Add New</a></p>
 
