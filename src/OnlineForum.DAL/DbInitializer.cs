@@ -11,8 +11,6 @@ namespace OnlineForum.DAL
     {
         public static void Initialize(OnlineForumContext context)
         {
-            context.Database.EnsureCreated();
-
             if (context.Threads.Any())
             {
                 return;
@@ -40,9 +38,15 @@ namespace OnlineForum.DAL
                     Content = "Content" + i,
                     Created = DateTime.Now,
                     Modified = DateTime.Now,
-                    Upvotes = random.Next(1, 100),
-                    Downvotes = random.Next(1, 100),
-                    User = user
+                    User = user,
+                    Votes = new List<ThreadVote>()
+                    {
+                        new ThreadVote()
+                        {
+                            VoteBy = user,
+                            VoteScore = 1,
+                        }
+                    }
                 };
 
                 threads.Add(thread);

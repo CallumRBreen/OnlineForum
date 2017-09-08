@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OnlineForum.Core.Interfaces;
@@ -25,9 +26,10 @@ namespace OnlineForum.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Comments(int threadId)
         {
-            var thread = _threadService.GetThread(threadId);
+            var thread = _threadService.GetThread(threadId); // Add 404 page if null
 
             var commentsViewModel = new CommentsViewModel()
             {
@@ -52,7 +54,7 @@ namespace OnlineForum.Web.Controllers
         [HttpPost]
         public IActionResult Add(AddCommentViewModel addCommentVm)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
                 var parentComment = _commentService.GetComment(addCommentVm.ParentId);
                 var user = _userService.GetUser(HttpContext.GetCurrentUserId());
@@ -60,13 +62,10 @@ namespace OnlineForum.Web.Controllers
 
                 _commentService.CreateComment(addCommentVm.Content, parentComment, user, thread);
                 
-
                 return RedirectToAction("Comments", new {threadId = addCommentVm.ThreadId});
             }
-            else
-            {
-                return View();
-            }
+
+            return View();
         }
     }
 }

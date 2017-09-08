@@ -36,29 +36,17 @@ namespace OnlineForum.Web.Controllers
             {
                 var user = _userService.SignIn(userLogin.Username, userLogin.Password);
 
-                if (user != null)
-                {
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, userLogin.Username),
-                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
-                    };
- 
-                    ClaimsPrincipal principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "login"));
-                    await HttpContext.Authentication.SignInAsync("CookieAuthentication", principal);
+                if (user == null) return RedirectToAction("Forbidden"); //Add error to screen instead of redirection to forbidden
 
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    return RedirectToAction("Forbidden");
-                }
+                await SignIn(user);
+
+                return RedirectToAction("Index");
             }
-            else
-            {
-                return View();
-            }
+
+            return View();
         }
+
+        
 
         [HttpGet]
         public async Task<IActionResult> Logout()
@@ -79,16 +67,27 @@ namespace OnlineForum.Web.Controllers
 
                 return RedirectToAction("Login");
             }
-            else
-            {
-                return View();
-            }
+
+            return View();
         }
 
         [HttpGet]
         public IActionResult Forbidden()
         {
             return View();
+        }
+
+        private async Task SignIn(User user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString())
+            };
+
+            var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "login"));
+
+            await HttpContext.Authentication.SignInAsync("CookieAuthentication", principal);
         }
     }
 }

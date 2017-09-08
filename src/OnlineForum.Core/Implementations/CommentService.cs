@@ -24,8 +24,7 @@ namespace OnlineForum.Core.Implementations
 
         public void CreateComment(string content, Comment parentComment, User user, Thread thread)
         {
-            var entityComment = _mapper.Map<DAL.Entities.Comment>(parentComment);
-
+            var entityComment = _mapper.Map<DAL.Entities.Comment>(parentComment) ?? throw new Exception("Comment cannot be null");
             var entityUser = _mapper.Map<DAL.Entities.User>(user) ?? throw new Exception("User cannot be null");
             var entityThread = _mapper.Map<DAL.Entities.Thread>(thread) ?? throw new Exception("Thread cannot be null");
 

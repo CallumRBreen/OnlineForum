@@ -11,9 +11,8 @@ namespace OnlineForum.DAL.Entities
         public string Content { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
-        public int Upvotes { get; set; }
-        public int Downvotes { get; set; }
 
+        public List<ThreadVote> Votes { get; set; }
         public User User { get; set; }
         public List<Comment> Comments { get; set; }
     }

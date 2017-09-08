@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace OnlineForum.DAL.Migrations
 {
-    public partial class Initial : Migration
+    public partial class First : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,10 +32,8 @@ namespace OnlineForum.DAL.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Content = table.Column<string>(nullable: true),
                     Created = table.Column<DateTime>(nullable: false),
-                    Downvotes = table.Column<int>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
                     Title = table.Column<string>(nullable: true),
-                    Upvotes = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -87,6 +85,33 @@ namespace OnlineForum.DAL.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ThreadVote",
+                columns: table => new
+                {
+                    ThreadVoteId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ThreadId = table.Column<int>(nullable: true),
+                    VoteByUserId = table.Column<int>(nullable: true),
+                    VoteScore = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ThreadVote", x => x.ThreadVoteId);
+                    table.ForeignKey(
+                        name: "FK_ThreadVote_Threads_ThreadId",
+                        column: x => x.ThreadId,
+                        principalTable: "Threads",
+                        principalColumn: "ThreadId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ThreadVote_Users_VoteByUserId",
+                        column: x => x.VoteByUserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_ParentCommentId",
                 table: "Comments",
@@ -108,6 +133,16 @@ namespace OnlineForum.DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ThreadVote_ThreadId",
+                table: "ThreadVote",
+                column: "ThreadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThreadVote_VoteByUserId",
+                table: "ThreadVote",
+                column: "VoteByUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName",
                 table: "Users",
                 column: "UserName",
@@ -118,6 +153,9 @@ namespace OnlineForum.DAL.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "ThreadVote");
 
             migrationBuilder.DropTable(
                 name: "Threads");

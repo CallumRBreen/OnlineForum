@@ -36,15 +36,16 @@ namespace OnlineForum.Web.Controllers
         [HttpPost]
         public IActionResult Edit(Thread thread)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
-                _threadService.EditThread(thread);
-                return RedirectToAction("Index");
+                if (_threadService.GetThread(thread.ThreadId).User.UserId == User.GetCurrentUserId())
+                {
+                    _threadService.EditThread(thread);
+                    return RedirectToAction("Index");
+                }
             }
-            else
-            {
-                return View(thread);
-            }
+
+            return View(thread);
         }
 
         [HttpGet]
@@ -56,18 +57,16 @@ namespace OnlineForum.Web.Controllers
         [HttpPost]
         public IActionResult Create(Thread thread)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && User.Identity.IsAuthenticated)
             {
                 thread.User = _userService.GetUser(HttpContext.GetCurrentUserId());
 
-                _threadService.CreateThread(thread);
+                var createdThreadId = _threadService.CreateThread(thread);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Comments","Comment", new {threadId = createdThreadId});
             }
-            else
-            {
-                return View();
-            }
+
+            return View();
         }
 
         [HttpPost]
@@ -78,17 +77,19 @@ namespace OnlineForum.Web.Controllers
         }
 
         [HttpPost]
-        public void Upvote(int threadId)
+        public JsonResult Upvote(int threadId)
         {
-            _threadService.Upvote(threadId);
+            var voteResult = _threadService.Upvote(threadId, HttpContext.GetCurrentUserId());
+
+            return new JsonResult(voteResult);
         }
 
         [HttpPost]
-        public void Downvote(int threadId)
+        public JsonResult Downvote(int threadId)
         {
-            _threadService.Downvote(threadId);
-        }
+            var voteResult = _threadService.Downvote(threadId, HttpContext.GetCurrentUserId());
 
-        
+            return new JsonResult(voteResult);
+        }     
     }
 }

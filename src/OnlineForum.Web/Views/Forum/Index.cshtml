@@ -14,6 +14,7 @@
 @foreach (var thread in Model)
 {
     
-    @Html.Partial("Components/_Thread", thread)
+   //Html.Partial("Components/_Thread", thread)
+   @await Component.InvokeAsync("Thread", new { thread, ShowFullContent = false })
 }
 

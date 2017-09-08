@@ -5,11 +5,13 @@ using System.Linq.Expressions;
 using System.Text;
 using AutoMapper;
 using OnlineForum.Core.Interfaces;
-using OnlineForum.Core.Models;
 using OnlineForum.DAL;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using OnlineForum.Core.Models;
+using Thread = OnlineForum.Core.Models.Thread;
+using ThreadVote = OnlineForum.DAL.Entities.ThreadVote;
 
 
 namespace OnlineForum.Core.Implementations
@@ -28,6 +30,7 @@ namespace OnlineForum.Core.Implementations
         public IEnumerable<Thread> GetThreads()
         {
             var entityThreads = _context.Threads.Include(u => u.User)
+                                                .Include(v => v.Votes)
                                                 .Include(c => c.Comments);
 
             return _mapper.Map<IEnumerable<Thread>>(entityThreads);
@@ -36,6 +39,7 @@ namespace OnlineForum.Core.Implementations
         public Thread GetThread(int threadId)
         {
             var entityThread = _context.Threads.Include(u => u.User)
+                                               .Include(v => v.Votes)
                                                .Include(c => c.Comments)
                                                .FirstOrDefault(x => x.ThreadId == threadId);
 
@@ -50,8 +54,14 @@ namespace OnlineForum.Core.Implementations
 
             entityThread.Created = DateTime.Now;
             entityThread.Modified = DateTime.Now;
-            entityThread.Downvotes = 0;
-            entityThread.Upvotes = 0;
+
+            var threadVote = new ThreadVote()
+            {
+                VoteBy = entityThread.User,
+                VoteScore = 1
+            };
+
+            entityThread.Votes.Add(threadVote);
 
             _context.Threads.Add(entityThread);
             _context.SaveChanges();
@@ -85,25 +95,77 @@ namespace OnlineForum.Core.Implementations
             _context.SaveChanges();
         }
 
-        // add validation so user can only vote once
-        public void Upvote(int threadId)
+        public VoteResult Upvote(int threadId, int userId)
         {
-            var entityThread = _context.Threads.Find(threadId);
+            var thread = _context.Threads.Include(u => u.User)
+                                         .Include(v => v.Votes)
+                                         .Include(c => c.Comments)
+                                         .First(x => x.ThreadId == threadId);
 
-            if (entityThread == null) return;
+            var user = _context.Users.First(x => x.UserId == userId);
 
-            entityThread.Upvotes++;
+            var vote = thread.Votes.FirstOrDefault(x => x.VoteBy.UserId == user.UserId);
+
+            if (vote == null)
+            {
+                vote = new ThreadVote()
+                {
+                    VoteScore = 1,
+                    VoteBy = user
+
+                };
+
+                thread.Votes.Add(vote);
+            }
+            else
+            {
+                vote.VoteScore = vote.VoteScore == 1 ? 0 : 1;
+            }
+
             _context.SaveChanges();
+
+            return new VoteResult()
+            {
+                Score = thread.Votes.Sum(x => x.VoteScore),
+                DidScoreIncrease = vote.VoteScore == 1,
+            };
         }
 
-        public void Downvote(int threadId)
+        public VoteResult Downvote(int threadId, int userId)
         {
-            var entityThread = _context.Threads.Find(threadId);
+            var thread = _context.Threads.Include(u => u.User)
+                                         .Include(v => v.Votes)
+                                         .Include(c => c.Comments)
+                                         .First(x => x.ThreadId == threadId);
 
-            if (entityThread == null) return;
+            var user = _context.Users.First(x => x.UserId == userId);
 
-            entityThread.Downvotes++;
+            var vote = thread.Votes.FirstOrDefault(x => x.VoteBy.UserId == user.UserId);
+
+            if (vote == null)
+            {
+                vote = new ThreadVote()
+                {
+                    VoteScore = -1,
+                    VoteBy = user
+
+                };
+
+                thread.Votes.Add(vote);
+            }
+            else
+            {
+
+                vote.VoteScore = vote.VoteScore == -1 ? 0 : -1;
+            }
+
             _context.SaveChanges();
+
+            return new VoteResult()
+            {
+                Score = thread.Votes.Sum(x => x.VoteScore),
+                DidScoreIncrease = vote.VoteScore == 0,
+            };
         }
     }
 }

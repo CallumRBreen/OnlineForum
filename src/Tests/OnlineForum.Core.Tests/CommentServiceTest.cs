@@ -35,6 +35,17 @@ namespace OnlineForum.Core.Tests
             }
         }
 
+        [Test]
+        public void CommentNullArguments()
+        {
+            using (var context = GetNewContext())
+            {
+                var commentService = GetCommentService(context);
+
+                commentService.CreateComment("test", null, null, null);
+            }
+        }
+
         private static CommentService GetCommentService(OnlineForumContext context)
         {
             var mapper = GetMapper();

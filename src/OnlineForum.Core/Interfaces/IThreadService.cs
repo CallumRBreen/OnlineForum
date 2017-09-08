@@ -12,7 +12,7 @@ namespace OnlineForum.Core.Interfaces
         int CreateThread(Thread thread);
         void EditThread(Thread thread);
         void DeleteThread(int threadId);
-        void Upvote(int threadId);
-        void Downvote(int threadId);
+        VoteResult Upvote(int threadId, int userId);
+        VoteResult Downvote(int threadId, int userId);
     }
 }

@@ -14,6 +14,9 @@ namespace OnlineForum.Core.Mappings
                 .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments))
                 .ReverseMap();
 
+            CreateMap<DAL.Entities.ThreadVote, Core.Models.ThreadVote>()
+                .ReverseMap();
+
             CreateMap<DAL.Entities.User, Core.Models.User>()
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
                 .ReverseMap();

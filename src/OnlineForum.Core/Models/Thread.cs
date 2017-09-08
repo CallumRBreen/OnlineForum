@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace OnlineForum.Core.Models
@@ -23,11 +25,9 @@ namespace OnlineForum.Core.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime Modified { get; set; }
 
-        public int Upvotes { get; set; }
+        public List<ThreadVote> Votes { get; set; }
 
-        public int Downvotes { get; set; }
-
-        public int GetScore() => Upvotes - Downvotes;
+        public int GetScore() => Votes.Sum(x => x.VoteScore);
 
         public User User { get; set; }
 

@@ -8,8 +8,8 @@ using OnlineForum.DAL;
 namespace OnlineForum.DAL.Migrations
 {
     [DbContext(typeof(OnlineForumContext))]
-    [Migration("20170828162129_AddCommentsLinkToThreads")]
-    partial class AddCommentsLinkToThreads
+    [Migration("20170907154602_First")]
+    partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,13 +58,9 @@ namespace OnlineForum.DAL.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<int>("Downvotes");
-
                     b.Property<DateTime>("Modified");
 
                     b.Property<string>("Title");
-
-                    b.Property<int>("Upvotes");
 
                     b.Property<int?>("UserId");
 
@@ -73,6 +69,26 @@ namespace OnlineForum.DAL.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Threads");
+                });
+
+            modelBuilder.Entity("OnlineForum.DAL.Entities.ThreadVote", b =>
+                {
+                    b.Property<int>("ThreadVoteId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("ThreadId");
+
+                    b.Property<int?>("VoteByUserId");
+
+                    b.Property<int>("VoteScore");
+
+                    b.HasKey("ThreadVoteId");
+
+                    b.HasIndex("ThreadId");
+
+                    b.HasIndex("VoteByUserId");
+
+                    b.ToTable("ThreadVote");
                 });
 
             modelBuilder.Entity("OnlineForum.DAL.Entities.User", b =>
@@ -114,6 +130,17 @@ namespace OnlineForum.DAL.Migrations
                     b.HasOne("OnlineForum.DAL.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("OnlineForum.DAL.Entities.ThreadVote", b =>
+                {
+                    b.HasOne("OnlineForum.DAL.Entities.Thread", "Thread")
+                        .WithMany("Votes")
+                        .HasForeignKey("ThreadId");
+
+                    b.HasOne("OnlineForum.DAL.Entities.User", "VoteBy")
+                        .WithMany()
+                        .HasForeignKey("VoteByUserId");
                 });
         }
     }

@@ -7,6 +7,7 @@ using NUnit.Framework;
 using OnlineForum.Core.Implementations;
 using OnlineForum.DAL;
 using OnlineForum.DAL.Entities;
+using ThreadVote = OnlineForum.Core.Models.ThreadVote;
 
 namespace OnlineForum.Core.Tests
 {
@@ -26,8 +27,13 @@ namespace OnlineForum.Core.Tests
                     Content = "New Content",
                     Created = DateTime.Now,
                     Modified = DateTime.Now,
-                    Upvotes = 99,
-                    Downvotes = 435
+                    Votes = new List<ThreadVote>()
+                    {
+                        new ThreadVote()
+                        {
+                            VoteScore = 1
+                        }
+                    } 
                 });
 
                 Assert.Greater(threadId, 0);
@@ -68,8 +74,8 @@ namespace OnlineForum.Core.Tests
                     ThreadId = 20,
                     Title = "New Title",
                     Content = "New Content",
-                    Upvotes = 666,
-                    Downvotes = 666,
+                    //Upvotes = 666,
+                    //Downvotes = 666,
                     Modified = DateTime.Now,
                     Created = DateTime.Now
                 };

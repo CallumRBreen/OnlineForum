@@ -23,10 +23,10 @@ namespace OnlineForum.Web.Controllers
         [HttpGet]
         public IActionResult Profile()
         {
-            var user = _userService.GetUser(HttpContext.GetCurrentUserId());
-
-            if (user != null)
+            if (User.Identity.IsAuthenticated)
             {
+                var user = _userService.GetUser(HttpContext.GetCurrentUserId());
+
                 return View(user);
             }
 
