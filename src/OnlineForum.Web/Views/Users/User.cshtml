@@ -1,0 +1,32 @@
+﻿@model OnlineForum.Web.ViewModels.Users.UserViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+
+@* This page will be composed of view components *@
+
+<p>@Model.User.UserId</p>
+<p>@Model.User.UserName</p>
+
+<h3>Posts</h3>
+
+@foreach (var thread in @Model.Threads)
+{
+    @await Component.InvokeAsync("Thread", new { thread, ShowFullContent = false })
+}
+
+<h3>Comments</h3>
+
+@foreach (var comment in @Model.Comments)
+{
+    <p>@comment.Content</p>
+}
+
+
+
+
+
+
+

@@ -11,7 +11,7 @@ using OnlineForum.DAL;
 namespace OnlineForum.Core.Tests
 {
     [TestFixture]
-    public class CommentServiceTest : TestBase
+    public class CommentServiceTest : ServiceTestBase
     {
         [Test]
         public void CommentTreeBuiltSuccessful()
@@ -20,7 +20,7 @@ namespace OnlineForum.Core.Tests
             {
                 var commentService = GetCommentService(context);
 
-                var commentNodes = commentService.GetComments(1);
+                var commentNodes = commentService.GetCommentsAsNodes(1);
 
                 var topComment = commentNodes.First().Comment;
                 var topCommentReplyOne = commentNodes.First().ChildComments.First().Comment;

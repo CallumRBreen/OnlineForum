@@ -6,12 +6,11 @@
 
 <div asp-validation-summary="All" class="text-danger"></div>
 
-<form asp-action="Add" method="post" role="form">
+<form asp-controller="Comments" asp-action="Add" method="post" role="form">
     
     <input type="hidden" asp-for="ThreadId" />
     <input type="hidden" asp-for="ParentId" />
     
-
     <div class="form-group">
         <label>Content</label>
         <textarea id="Content" class="form-control" asp-for="Content" rows="3"></textarea>
@@ -19,7 +18,7 @@
 
     <div class="text-center">
         <input class="btn btn-primary" type="submit" value="Add"/>
-        <a asp-controller="Comment" asp-action="Comments" asp-route-threadId="@Model.ThreadId" class="btn btn-default">Cancel</a>
+        <a asp-controller="Comments" asp-action="Index" asp-route-threadId="@Model.ThreadId" class="btn btn-default">Cancel</a>
     </div>
 
 </form>

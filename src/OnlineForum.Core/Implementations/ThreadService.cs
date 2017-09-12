@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -30,7 +31,7 @@ namespace OnlineForum.Core.Implementations
         public IEnumerable<Thread> GetThreads()
         {
             var entityThreads = _context.Threads.Include(u => u.User)
-                                                .Include(v => v.Votes)
+                                                .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
                                                 .Include(c => c.Comments);
 
             return _mapper.Map<IEnumerable<Thread>>(entityThreads);
@@ -39,7 +40,7 @@ namespace OnlineForum.Core.Implementations
         public Thread GetThread(int threadId)
         {
             var entityThread = _context.Threads.Include(u => u.User)
-                                               .Include(v => v.Votes)
+                                               .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
                                                .Include(c => c.Comments)
                                                .FirstOrDefault(x => x.ThreadId == threadId);
 
@@ -98,7 +99,7 @@ namespace OnlineForum.Core.Implementations
         public VoteResult Upvote(int threadId, int userId)
         {
             var thread = _context.Threads.Include(u => u.User)
-                                         .Include(v => v.Votes)
+                                         .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
                                          .Include(c => c.Comments)
                                          .First(x => x.ThreadId == threadId);
 
@@ -134,7 +135,7 @@ namespace OnlineForum.Core.Implementations
         public VoteResult Downvote(int threadId, int userId)
         {
             var thread = _context.Threads.Include(u => u.User)
-                                         .Include(v => v.Votes)
+                                         .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
                                          .Include(c => c.Comments)
                                          .First(x => x.ThreadId == threadId);
 
@@ -148,14 +149,12 @@ namespace OnlineForum.Core.Implementations
                 {
                     VoteScore = -1,
                     VoteBy = user
-
                 };
 
                 thread.Votes.Add(vote);
             }
             else
             {
-
                 vote.VoteScore = vote.VoteScore == -1 ? 0 : -1;
             }
 

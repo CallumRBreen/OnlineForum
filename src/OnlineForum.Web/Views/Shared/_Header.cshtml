@@ -12,7 +12,7 @@
                 @if (@User.Identity.IsAuthenticated)
                 {
                     <div>
-                        Hello <a asp-controller="User" asp-action="Profile">@User.Identity.Name</a>
+                        Hello <a asp-controller="Users" asp-action="User" asp-route-userId="@User.GetCurrentUserId()">@User.Identity.Name</a>
                     </div>
                 }
                 else

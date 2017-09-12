@@ -7,7 +7,7 @@ using OnlineForum.DAL;
 
 namespace OnlineForum.Core.Tests
 {
-    public class TestBase
+    public class ServiceTestBase
     {
         protected static OnlineForumContext GetNewContext()
         {

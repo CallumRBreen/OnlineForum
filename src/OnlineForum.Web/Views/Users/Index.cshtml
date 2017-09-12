@@ -1,0 +1,35 @@
+﻿@model System.Collections.Generic.IEnumerable<OnlineForum.Core.Models.User>
+
+@{
+    Layout = "_Layout";
+}
+
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <td>#</td>
+            <th>Username</th>
+            <td>Email</td>
+        </tr>
+    </thead>
+    <tbody>    
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @user.UserId
+                </td>
+                <td>
+                    @user.UserName
+                </td>
+                <td>
+                    @user.Email
+                </td>
+            </tr>
+        }            
+    </tbody>
+</table>
+
+
+
+

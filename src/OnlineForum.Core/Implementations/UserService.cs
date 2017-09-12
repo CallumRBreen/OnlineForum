@@ -7,6 +7,7 @@ using OnlineForum.Core.Interfaces;
 using OnlineForum.Core.Models;
 using OnlineForum.DAL;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace OnlineForum.Core.Implementations
@@ -38,7 +39,7 @@ namespace OnlineForum.Core.Implementations
             return _mapper.Map<User>(user);
         }
 
-        public int CreateUser(string username, string password, string email) // Add enum, with response type e.g. successful, user already exists
+        public CreateUserResponse CreateUser(string username, string password, string email)
         {
             var user = new DAL.Entities.User
             {
@@ -47,10 +48,29 @@ namespace OnlineForum.Core.Implementations
                 Email = email
             };
 
+            var createUserResponse = new CreateUserResponse();
+
+            if (_context.Users.Any(u => u.UserName == username))
+            {
+                createUserResponse.Success = false;
+                createUserResponse.Message = "Username already taken.";
+                return createUserResponse;
+            }
+
+            if (_context.Users.Any(u => u.Email == email))
+            {
+                createUserResponse.Success = false;
+                createUserResponse.Message = "Email already taken.";
+                return createUserResponse;
+            }
+
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return user.UserId;
+            createUserResponse.Success = true;
+            createUserResponse.Message = $"Successfully created user {user.UserName}.";
+
+            return createUserResponse;
         }
 
         public User SignIn(string username, string password)
@@ -64,6 +84,20 @@ namespace OnlineForum.Core.Implementations
         private string GetPasswordHash(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
+        }
+
+        public IEnumerable<Thread> GetUserThreads(int userId)
+        {
+            var threads = _context.Threads.Include(u => u.User).Where(x => x.User.UserId == userId);
+
+            return _mapper.Map<IEnumerable<Thread>>(threads);
+        }
+
+        public IEnumerable<Comment> GetUserComments(int userId)
+        {
+            var threads = _context.Comments.Include(u => u.User).Where(x => x.User.UserId == userId);
+
+            return _mapper.Map<IEnumerable<Comment>>(threads);
         }
     }
 }

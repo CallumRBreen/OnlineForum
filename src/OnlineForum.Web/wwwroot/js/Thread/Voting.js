@@ -15,7 +15,7 @@ function Upvote(threadId, url) {
 
             $('.score.' + threadId).html(data.score);
         });
-};
+}
 
 function Downvote(threadId, url)
 {
@@ -34,7 +34,7 @@ function Downvote(threadId, url)
 
             $('.score.' + threadId).html(data.score);
         });
-};
+}
 
 function ClearButtonClasses(threadId)
 {

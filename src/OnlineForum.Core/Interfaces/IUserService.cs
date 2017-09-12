@@ -10,7 +10,9 @@ namespace OnlineForum.Core.Interfaces
     {
         IEnumerable<User> GetUsers();
         User GetUser(int userId);
-        int CreateUser(string username, string password, string email);
+        CreateUserResponse CreateUser(string username, string password, string email);
         User SignIn(string username, string password);
+        IEnumerable<Thread> GetUserThreads(int userId);
+        IEnumerable<Comment> GetUserComments(int userId);
     }
 }

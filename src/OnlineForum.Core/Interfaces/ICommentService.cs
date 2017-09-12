@@ -9,7 +9,7 @@ namespace OnlineForum.Core.Interfaces
     {
         void CreateComment(string content, Comment parentComment, User user, Thread thread);
 
-        IEnumerable<CommentNode> GetComments(int threadId);
+        IEnumerable<CommentNode> GetCommentsAsNodes(int threadId);
 
         Comment GetComment(int commentId);
 

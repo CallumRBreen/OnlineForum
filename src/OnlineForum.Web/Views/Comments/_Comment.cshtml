@@ -1,11 +1,10 @@
-﻿@using OnlineForum.Web.Utility
-@model OnlineForum.Core.Models.CommentNode
+﻿@model OnlineForum.Core.Models.CommentNode
 
 <ul class="list-group">
     <li class="list-group-item" >
         
         <div class="commentHeader">
-            Submitted @DateTime.Now.Subtract(@Model.Comment.Created).Humanize() ago by @Model.Comment.User.UserName
+            Submitted @DateTime.Now.Subtract(@Model.Comment.Created).Humanize() ago by <a asp-controller="Users" asp-action="User" asp-route-userId="@Model.Comment.User.UserId">@Model.Comment.User.UserName</a>    
         </div>
 
         <div class="commentContent">
@@ -13,7 +12,7 @@
         </div>
             
         <div class="commentFooter">
-            <a asp-action="Add" asp-route-parentId="@Model.Comment.CommentId" asp-route-threadId="@Model.Comment.Thread.ThreadId">
+            <a asp-controller="Comments" asp-action="Add" asp-route-parentId="@Model.Comment.CommentId" asp-route-threadId="@Model.Comment.Thread.ThreadId">
                 Reply
             </a>
         </div>

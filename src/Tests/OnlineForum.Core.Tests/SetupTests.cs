@@ -21,7 +21,7 @@ namespace OnlineForum.Core.Tests
 
             using (context)
             {
-                DbInitializer.Initialize(context);
+                DbInitializer.InitializeTestData(context);
             }
 
         }

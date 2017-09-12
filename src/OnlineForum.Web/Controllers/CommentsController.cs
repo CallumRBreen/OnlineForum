@@ -12,13 +12,13 @@ using OnlineForum.Web.ViewModels.Comment;
 
 namespace OnlineForum.Web.Controllers
 {
-    public class CommentController : Controller
+    public class CommentsController : Controller
     {
         private readonly ICommentService _commentService;
         private readonly IUserService _userService;
         private readonly IThreadService _threadService;
 
-        public CommentController(ICommentService commentService, IUserService userService, IThreadService threadService)
+        public CommentsController(ICommentService commentService, IUserService userService, IThreadService threadService)
         {
             _commentService = commentService;
             _userService = userService;
@@ -27,18 +27,23 @@ namespace OnlineForum.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Comments(int threadId)
+        public IActionResult Index(int threadId)
         {
             var thread = _threadService.GetThread(threadId); // Add 404 page if null
 
-            var commentsViewModel = new CommentsViewModel()
+            if (thread != null)
             {
-                Thread = thread,
-                Comments = _commentService.GetComments(threadId)
+                var commentsViewModel = new CommentsViewModel()
+                {
+                    Thread = thread,
+                    Comments = _commentService.GetCommentsAsNodes(threadId)
 
-            };
+                };
 
-            return View(commentsViewModel);
+                return View(commentsViewModel);
+            }
+
+            return RedirectToAction("Index", "Forum");
         }
 
         [HttpGet]
@@ -62,7 +67,7 @@ namespace OnlineForum.Web.Controllers
 
                 _commentService.CreateComment(addCommentVm.Content, parentComment, user, thread);
                 
-                return RedirectToAction("Comments", new {threadId = addCommentVm.ThreadId});
+                return RedirectToAction("Index", new {threadId = addCommentVm.ThreadId});
             }
 
             return View();

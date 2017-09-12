@@ -9,7 +9,7 @@ using OnlineForum.DAL;
 namespace OnlineForum.Core.Tests
 {
     [TestFixture]
-    public class UserServiceTests : TestBase
+    public class UserServiceTests : ServiceTestBase
     {
         [Test]
         public void CreateUserSuccess()
@@ -18,9 +18,8 @@ namespace OnlineForum.Core.Tests
             {
                 var userService = GetUserService(context);
 
-                var newUserId = userService.CreateUser("callumtest", "password123", "callumtest@asdas.com");
-
-                Assert.Greater(newUserId, 0);
+                var createUserResponse = userService.CreateUser("callumtest", "password123", "callumtest@asdas.com");
+                Assert.IsTrue(createUserResponse.Success);
             }
         }
 

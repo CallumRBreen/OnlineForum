@@ -12,7 +12,7 @@ using ThreadVote = OnlineForum.Core.Models.ThreadVote;
 namespace OnlineForum.Core.Tests
 {
     [TestFixture]
-    class ThreadServiceTests : TestBase
+    class ThreadServiceTests : ServiceTestBase
     {
         [Test]
         public void ThreadCreateSuccess()
@@ -74,10 +74,15 @@ namespace OnlineForum.Core.Tests
                     ThreadId = 20,
                     Title = "New Title",
                     Content = "New Content",
-                    //Upvotes = 666,
-                    //Downvotes = 666,
                     Modified = DateTime.Now,
-                    Created = DateTime.Now
+                    Created = DateTime.Now,
+                    Votes = new List<ThreadVote>()
+                    {
+                        new ThreadVote()
+                        {
+                            VoteScore = 1
+                        }
+                    } 
                 };
 
                 threadService.EditThread(thread);

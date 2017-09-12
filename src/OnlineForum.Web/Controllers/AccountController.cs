@@ -36,7 +36,11 @@ namespace OnlineForum.Web.Controllers
             {
                 var user = _userService.SignIn(userLogin.Username, userLogin.Password);
 
-                if (user == null) return RedirectToAction("Forbidden"); //Add error to screen instead of redirection to forbidden
+                if (user == null)
+                {
+                    TempData["loginFailure"] = "Username or Password incorrect.";
+                    return View();
+                }
 
                 await SignIn(user);
 
@@ -63,9 +67,18 @@ namespace OnlineForum.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _userService.CreateUser(user.UserName, user.Password, user.Email);
+                var createUserResponse = _userService.CreateUser(user.UserName, user.Password, user.Email);
 
-                return RedirectToAction("Login");
+                if (createUserResponse.Success)
+                {
+                    TempData["signupSuccess"] = createUserResponse.Message;
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    TempData["signupFailure"] = createUserResponse.Message;
+                    return View();
+                }
             }
 
             return View();

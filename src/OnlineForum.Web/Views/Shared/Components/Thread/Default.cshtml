@@ -33,7 +33,7 @@
                 <div class="col-xs-11">
 
                     <div class="row threadTitle">
-                        <a asp-controller="Comment" asp-action="Comments" asp-route-threadId="@Model.ThreadId">@Model.Title</a>
+                        <a asp-controller="Comments" asp-action="Index" asp-route-threadId="@Model.ThreadId">@Model.Title</a>
                     </div>
 
                     @if (Convert.ToBoolean(@ViewData["ShowFullContent"]))
@@ -51,11 +51,12 @@
 
 
                     <div class="row">
-                        <small>Submitted @DateTime.Now.Subtract(@Model.Created).Humanize() ago by @Model.User.UserName</small>
+                        <small>Submitted @DateTime.Now.Subtract(@Model.Created).Humanize() ago by <a asp-controller="Users" asp-action="User" asp-route-userId="@Model.User.UserId">@Model.User.UserName</a>
+                        </small>
                     </div>
 
                     <div class="row">
-                        <a asp-controller="Comment" asp-action="Comments" asp-route-threadId="@Model.ThreadId"><small>@Model.Comments.Count Comments</small></a>
+                        <a asp-controller="Comments" asp-action="Index" asp-route-threadId="@Model.ThreadId"><small>@Model.Comments.Count Comments</small></a>
                         
                         @if (User.GetCurrentUserId() == @Model.User.UserId)
                         {      

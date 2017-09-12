@@ -6,7 +6,7 @@
 
 @await Component.InvokeAsync("Thread", new { @Model.Thread, ShowFullContent = true })
 
-<p>Comments <a asp-action="Add" asp-route-parentId="0" asp-route-threadId="@Model.Thread.ThreadId" class="btn btn-link">Add New</a></p>
+<p>Comments <a asp-controller="Comments" asp-action="Add" asp-route-parentId="0" asp-route-threadId="@Model.Thread.ThreadId" class="btn btn-link">Add New</a></p>
 
 @foreach (var commentNode in @Model.Comments)
 {

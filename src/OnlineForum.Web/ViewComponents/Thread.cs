@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using OnlineForum.Core.Interfaces;
+using OnlineForum.Core.Models;
 using OnlineForum.Web.Utility;
 
 
@@ -21,6 +23,14 @@ namespace OnlineForum.Web.ViewComponents
         public IViewComponentResult Invoke(Core.Models.Thread thread, bool ShowFullContent)
         {
             ViewBag.ShowFullContent = ShowFullContent;
+
+            SetViewBagIfUserVoteExists(thread);
+
+            return View(thread);
+        }
+
+        private void SetViewBagIfUserVoteExists(Core.Models.Thread thread)
+        {
             ViewBag.HasUserUpvoted = false;
             ViewBag.HasUserDownvoted = false;
 
@@ -28,23 +38,21 @@ namespace OnlineForum.Web.ViewComponents
 
             if (userId != 0)
             {
-                var vote = thread.Votes.FirstOrDefault(v => v.VoteBy.UserId == userId);
+                var vote = thread.Votes?.FirstOrDefault(v => v.VoteBy.UserId == userId);
 
                 if (vote != null)
                 {
-                    if (vote.VoteScore == 1)
+                    switch (vote.VoteScore)
                     {
-                        ViewBag.HasUserUpvoted = true;
+                        case 1:
+                            ViewBag.HasUserUpvoted = true;
+                            break;
+                        case -1:
+                            ViewBag.HasUserDownvoted = true;
+                            break;
                     }
-                    else if(vote.VoteScore == -1)
-                    {
-                        ViewBag.HasUserDownvoted = true;
-                    }
-
                 }
             }
-
-            return View(thread);
         }
     }
 }

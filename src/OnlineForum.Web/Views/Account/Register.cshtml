@@ -6,23 +6,29 @@
 
 <h3>Create Account</h3>
 
-<div asp-validation-summary="All" class="text-danger"></div>
-
 <form asp-action="Register" method="post" role="form">
+    
+    @if (TempData["signupFailure"] != null)
+    {
+        <div class="alert alert-danger">@TempData["signupFailure"]</div>
+    }
 
-    <div class="form-group">
+    <div class="form-group">       
         <label>Username</label>
-        <input asp-for="UserName" class="form-control" />
+        <div><span asp-validation-for="UserName" class="text-danger"></span></div>
+        <input asp-for="UserName" class="form-control"/>
     </div>
     
-    <div class="form-group">
+    <div class="form-group">     
         <label>Email</label>
-        <input asp-for="Email" class="form-control" />
+        <div><span asp-validation-for="Email" class="text-danger"></span></div>
+        <input asp-for="Email" class="form-control"/>
     </div>
 
     <div class="form-group">
         <label>Password</label>
-        <input asp-for="Password" class="form-control" />
+        <div><span asp-validation-for="Password" class="text-danger"></span></div>
+        <input asp-for="Password" class="form-control"/>
     </div>
 
     <div class="text-center">

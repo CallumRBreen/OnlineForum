@@ -27,7 +27,8 @@ namespace OnlineForum.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            return View(_threadService.GetThreads().OrderByDescending(t => t.GetScore()));
+            var threads = _threadService.GetThreads().OrderByDescending(t => t.GetScore());
+            return View(threads);
         }
 
         [HttpGet]
@@ -63,7 +64,7 @@ namespace OnlineForum.Web.Controllers
 
                 var createdThreadId = _threadService.CreateThread(thread);
 
-                return RedirectToAction("Comments","Comment", new {threadId = createdThreadId});
+                return RedirectToAction("Index","Comments", new {threadId = createdThreadId});
             }
 
             return View();

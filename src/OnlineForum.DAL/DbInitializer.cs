@@ -11,6 +11,10 @@ namespace OnlineForum.DAL
     {
         public static void Initialize(OnlineForumContext context)
         {
+        }
+
+        public static void InitializeTestData(OnlineForumContext context)
+        {
             if (context.Threads.Any())
             {
                 return;
