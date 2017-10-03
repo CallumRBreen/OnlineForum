@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Content Include="wwwroot\css\custom.css" />
+    <Content Include="wwwroot\js\Comment\Voting.js" />
     <Content Include="wwwroot\js\Thread\Voting.js" />
   </ItemGroup>
   <ItemGroup>

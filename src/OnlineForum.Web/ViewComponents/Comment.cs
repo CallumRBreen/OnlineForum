@@ -8,25 +8,20 @@ using OnlineForum.Core.Interfaces;
 using OnlineForum.Core.Models;
 using OnlineForum.Web.Utility;
 
-
 namespace OnlineForum.Web.ViewComponents
 {
-    public class Thread : ViewComponent
+    public class Comment : ViewComponent
     {
-        public Thread()
-        {
-        }
-
-        public IViewComponentResult Invoke(Core.Models.Thread thread, bool ShowFullContent)
+        public IViewComponentResult Invoke(Core.Models.CommentNode commentNode, bool ShowFullContent)
         {
             ViewBag.ShowFullContent = ShowFullContent;
 
-            SetViewBagIfUserVoteExists(thread);
+            SetViewBagIfUserVoteExists(commentNode);
 
-            return View(thread);
+            return View(commentNode);
         }
 
-        private void SetViewBagIfUserVoteExists(Core.Models.Thread thread)
+        private void SetViewBagIfUserVoteExists(Core.Models.CommentNode commentNode)
         {
             ViewBag.HasUserUpvoted = false;
             ViewBag.HasUserDownvoted = false;
@@ -35,7 +30,7 @@ namespace OnlineForum.Web.ViewComponents
 
             if (userId != 0)
             {
-                var vote = thread.Votes?.FirstOrDefault(v => v.VoteBy.UserId == userId);
+                var vote = commentNode.Comment.Votes?.FirstOrDefault(v => v.VoteBy.UserId == userId);
 
                 if (vote != null)
                 {

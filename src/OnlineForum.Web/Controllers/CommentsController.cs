@@ -72,5 +72,21 @@ namespace OnlineForum.Web.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public JsonResult Upvote(int commentId)
+        {
+            var voteResult = _commentService.Upvote(commentId, HttpContext.GetCurrentUserId());
+
+            return new JsonResult(voteResult);
+        }
+
+        [HttpPost]
+        public JsonResult Downvote(int commentId)
+        {
+            var voteResult = _commentService.Downvote(commentId, HttpContext.GetCurrentUserId());
+
+            return new JsonResult(voteResult);
+        }  
     }
 }

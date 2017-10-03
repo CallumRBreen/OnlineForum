@@ -33,7 +33,7 @@ h1 {
     padding-bottom: 5px;
 }
 
-.threadRatingSection {
+.ratingSection {
     width: 60px;
     text-align: center;
 }
@@ -52,7 +52,12 @@ h1 {
     padding-bottom: 10px;
 }
 
-.score{
+.threadScore{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.commentScore {
     margin-top: 10px;
     margin-bottom: 10px;
 }

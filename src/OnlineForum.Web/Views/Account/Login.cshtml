@@ -11,7 +11,7 @@
 <form asp-action="Login" method="post" role="form">
     
     @if (TempData["loginFailure"] != null) {
-        <div class="alert alert-danger">@TempData["loginStatus"]</div>
+        <div class="alert alert-danger">@TempData["loginFailure"]</div>
     }
     
     @if (TempData["signupSuccess"] != null)

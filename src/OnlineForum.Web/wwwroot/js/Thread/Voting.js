@@ -1,45 +1,57 @@
 ﻿
-function Upvote(threadId, url) {
-    $.post(url,
-        {
-            threadId: threadId
-        },
-        function (data) {
 
-            ClearButtonClasses(threadId);
 
-            if (data.didScoreIncrease) {
-                $('.upvoteButton.' + threadId).removeClass('btn-primary');
-                $('.upvoteButton.' + threadId).addClass('btn-success');
-            }
+var threadVoting = (function() {
 
-            $('.score.' + threadId).html(data.score);
-        });
-}
+    function upvoteThread(threadId, url) {
+        $.post(url,
+            {
+                threadId: threadId
+            },
+            function (data) {
 
-function Downvote(threadId, url)
-{
-    $.post(url,
-        {
-            threadId: threadId
-        },
-        function (data) {
+                clearButtonClasses(threadId);
 
-            ClearButtonClasses(threadId);
+                if (data.didScoreIncrease) {
+                    $('.threadUpvoteButton.' + threadId).removeClass('btn-primary');
+                    $('.threadUpvoteButton.' + threadId).addClass('btn-success');
+                }
 
-            if (!data.didScoreIncrease) {
-                $('.downvoteButton.' + threadId).removeClass('btn-primary');
-                $('.downvoteButton.' + threadId).addClass('btn-danger');
-            }
+                $('.threadScore.' + threadId).html(data.score);
+            });
+    }
 
-            $('.score.' + threadId).html(data.score);
-        });
-}
+    function downvoteThread(threadId, url) {
+        $.post(url,
+            {
+                threadId: threadId
+            },
+            function (data) {
 
-function ClearButtonClasses(threadId)
-{
-    $('.downvoteButton.' + threadId).removeClass('btn-danger');
-    $('.downvoteButton.' + threadId).addClass('btn-primary');
-    $('.upvoteButton.' + threadId).removeClass('btn-success');
-    $('.upvoteButton.' + threadId).addClass('btn-primary');
-}
+                clearButtonClasses(threadId);
+
+                if (!data.didScoreIncrease) {
+                    $('.threadDownvoteButton.' + threadId).removeClass('btn-primary');
+                    $('.threadDownvoteButton.' + threadId).addClass('btn-danger');
+                }
+
+                $('.threadScore.' + threadId).html(data.score);
+            });
+    }
+
+    function clearButtonClasses(threadId) {
+        $('.threadDownvoteButton.' + threadId).removeClass('btn-danger');
+        $('.threadDownvoteButton.' + threadId).addClass('btn-primary');
+        $('.threadUpvoteButton.' + threadId).removeClass('btn-success');
+        $('.threadUpvoteButton.' + threadId).addClass('btn-primary');
+    }
+
+    return {
+        "upvoteThread": upvoteThread,
+        "downvoteThread": downvoteThread
+    };
+
+})();
+
+
+

@@ -19,7 +19,6 @@ namespace OnlineForum.DAL
                 .HasIndex(u => u.UserName)
                 .IsUnique();
 
-            //builder.Entity<Thread>().Property(x => x.ThreadId).UseSqlServerIdentityColumn();
         }
 
         public DbSet<Thread> Threads { get; set; }

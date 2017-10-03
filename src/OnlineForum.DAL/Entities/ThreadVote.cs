@@ -9,7 +9,6 @@ namespace OnlineForum.DAL.Entities
         public int ThreadVoteId { get; set; }
         public int VoteScore { get; set; }
 
-        public Thread Thread { get; set; }
         public User VoteBy { get; set; }
     }
 }

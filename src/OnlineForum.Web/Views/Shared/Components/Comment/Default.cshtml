@@ -1,0 +1,58 @@
+﻿@model OnlineForum.Core.Models.CommentNode
+@{string upvoteCssClass = ViewBag.HasUserUpvoted ? "btn-success" : "btn-primary";}
+@{string downvoteCssClass = ViewBag.HasUserDownvoted ? "btn-danger" : "btn-primary";}
+
+
+<ul class="list-group">
+    <li class="list-group-item">
+        
+        <div class="row">
+            
+            <div class="col-xs-1 ratingSection">
+                
+                <div class="row">
+                    <button class="btn btn-primary btn-xs @upvoteCssClass commentUpvoteButton @Model.Comment.CommentId" onclick="commentVoting.upvoteComment(@Model.Comment.CommentId, '@Url.Action("Upvote", "Comments")')">
+                        <span class="glyphicon glyphicon-arrow-up"></span>
+                    </button>
+                </div>
+
+                <div class="row">
+                    <button class="btn btn-primary btn-xs @downvoteCssClass commentDownvoteButton @Model.Comment.CommentId" onclick="commentVoting.downvoteComment(@Model.Comment.CommentId, '@Url.Action("Downvote", "Comments")')">
+                        <span class="glyphicon glyphicon-arrow-down"></span>
+                    </button>
+                </div>
+
+            </div>
+
+            
+            <div class="col-xs-11">
+                <div class="commentHeader">
+                    <a asp-controller="Users" asp-action="User" asp-route-userId="@Model.Comment.User.UserId">@Model.Comment.User.UserName</a> 
+                    <p class="commentScore @Model.Comment.CommentId"></p> @DateTime.Now.Subtract(@Model.Comment.Created).Humanize() 
+                </div>
+
+                <div class="commentContent">
+                    @Model.Comment.Content
+                </div>
+
+                <div class="commentFooter">
+                    <a asp-controller="Comments" asp-action="Add" asp-route-parentId="@Model.Comment.CommentId" asp-route-threadId="@Model.Comment.Thread.ThreadId">
+                        Reply
+                    </a>
+                </div>
+            </div>
+            
+
+        </div>
+
+
+        @if (Model.ChildComments.Any())
+        {
+            foreach (var commentNode in Model.ChildComments)
+            {
+                @await Component.InvokeAsync("Comment", new {commentNode, ShowFullContent = true})
+            }
+        }
+
+    </li>
+</ul>

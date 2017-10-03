@@ -13,5 +13,9 @@ namespace OnlineForum.Core.Interfaces
 
         Comment GetComment(int commentId);
 
+        VoteResult Upvote(int commentId, int userId);
+
+        VoteResult Downvote(int commentId, int userId);
+
     }
 }

@@ -8,6 +8,7 @@ using AutoMapper;
 using OnlineForum.Core.Interfaces;
 using OnlineForum.DAL;
 using System.Data;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using OnlineForum.Core.Models;
@@ -29,7 +30,7 @@ namespace OnlineForum.Core.Implementations
         }
 
         public IEnumerable<Thread> GetThreads()
-        {
+        { 
             var entityThreads = _context.Threads.Include(u => u.User)
                                                 .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
                                                 .Include(c => c.Comments);

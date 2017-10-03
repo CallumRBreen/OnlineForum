@@ -4,32 +4,33 @@
 
 
 <div class="panel panel-default">
+    
     <div class="panel-body">
-           
-        <div class="container">
-            
+
             <div class="row">
-            
-                <div class="col-xs-1 threadRatingSection">
+
+                <div class="col-xs-1 ratingSection">
 
                     <div class="row">
-                        <button class="btn @upvoteCssClass btn-xs upvoteButton @Model.ThreadId" onclick="Upvote(@Model.ThreadId,'@Url.Action("Upvote", "Forum")')">
+                        <button class="btn @upvoteCssClass btn-xs threadUpvoteButton @Model.ThreadId" onclick="threadVoting.upvoteThread(@Model.ThreadId, '@Url.Action("Upvote", "Forum")')">
                             <span class="glyphicon glyphicon-arrow-up"></span>
                         </button>
                     </div>
 
-                    <div class="row score @Model.ThreadId">
+                    <div class="row threadScore @Model.ThreadId">
                         @Model.GetScore()
                     </div>
+                    
+                    
 
                     <div class="row">
-                        <button class="btn @downvoteCssClass btn-xs downvoteButton @Model.ThreadId" onclick="Downvote(@Model.ThreadId,'@Url.Action("Downvote", "Forum")')">
+                        <button class="btn @downvoteCssClass btn-xs threadDownvoteButton @Model.ThreadId" onclick="threadVoting.downvoteThread(@Model.ThreadId, '@Url.Action("Downvote", "Forum")')">
                             <span class="glyphicon glyphicon-arrow-down"></span>
                         </button>
                     </div>
 
                 </div>
-                
+
                 <div class="col-xs-11">
 
                     <div class="row threadTitle">
@@ -57,20 +58,19 @@
 
                     <div class="row">
                         <a asp-controller="Comments" asp-action="Index" asp-route-threadId="@Model.ThreadId"><small>@Model.Comments.Count Comments</small></a>
-                        
+
                         @if (User.GetCurrentUserId() == @Model.User.UserId)
-                        {      
+                        {
                             <a asp-controller="Forum" asp-action="Edit" asp-route-threadId="@Model.ThreadId">&nbsp;<small>Edit</small></a>
-                            <a asp-controller="Forum" asp-action="Delete" asp-route-threadId="@Model.ThreadId" style="color: red;">&nbsp;<small>Delete</small></a> 
-                        }   
+                            <a asp-controller="Forum" asp-action="Delete" asp-route-threadId="@Model.ThreadId" style="color: red;">&nbsp;<small>Delete</small></a>
+                        }
                     </div>
 
                 </div>
 
-            </div>
 
         </div>
-        
+
     </div>
 
 </div>

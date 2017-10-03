@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace OnlineForum.Core.Models
@@ -23,5 +24,9 @@ namespace OnlineForum.Core.Models
         public Thread Thread { get; set; }
 
         public Comment Parent { get; set; }
+
+        public IEnumerable<CommentVote> Votes { get; set; }
+
+        public int GetScore() => Votes.Sum(v => v.VoteScore);
     }
 }

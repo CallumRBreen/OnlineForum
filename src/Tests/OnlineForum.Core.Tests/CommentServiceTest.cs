@@ -42,7 +42,7 @@ namespace OnlineForum.Core.Tests
             {
                 var commentService = GetCommentService(context);
 
-                commentService.CreateComment("test", null, null, null);
+                Assert.Throws<Exception>(() => commentService.CreateComment("test", null, null, null));
             }
         }
 

@@ -9,8 +9,6 @@
 <p>Comments <a asp-controller="Comments" asp-action="Add" asp-route-parentId="0" asp-route-threadId="@Model.Thread.ThreadId" class="btn btn-link">Add New</a></p>
 
 @foreach (var commentNode in @Model.Comments)
-{
-    
-    @Html.Partial("_Comment", commentNode)
-
+{ 
+    @await Component.InvokeAsync("Comment", new { commentNode, ShowFullContent = true })
 }

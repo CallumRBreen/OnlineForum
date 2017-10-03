@@ -8,6 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using OnlineForum.Core.Interfaces;
 using OnlineForum.Core.Models;
 using OnlineForum.DAL;
+using OnlineForum.DAL.Entities;
+using Comment = OnlineForum.Core.Models.Comment;
+using CommentVote = OnlineForum.DAL.Entities.CommentVote;
+using Thread = OnlineForum.Core.Models.Thread;
+using User = OnlineForum.Core.Models.User;
 
 namespace OnlineForum.Core.Implementations
 {
@@ -33,14 +38,22 @@ namespace OnlineForum.Core.Implementations
                 Thread = entityThread,
                 User = entityUser,
                 Content = content,
-                Upvotes = 0,
-                Downvotes = 0,
                 Parent = entityComment,
                 Created = DateTime.Now,
-                Modified = DateTime.Now 
+                Modified = DateTime.Now,
+                Votes = new List<CommentVote>()
             };
 
             _context.Comments.Add(newComment);
+
+            var comment = new DAL.Entities.CommentVote()
+            {
+                VoteScore = 1,
+                VoteBy = entityUser
+            };
+
+            newComment.Votes.Add(comment);
+
             _context.SaveChanges();
         }
 
@@ -49,7 +62,8 @@ namespace OnlineForum.Core.Implementations
             var comments = _context.Comments.Include(x => x.Thread)
                                             .Include(x => x.Parent)
                                             .Include(x => x.User)
-                                            .Where(x => x.Thread.ThreadId == threadId);
+                                            .Include(x => x.Votes).ThenInclude(x => x.VoteBy)
+                                            .Where(x => x.Thread.ThreadId == threadId).ToList();
 
             var modelComments = _mapper.Map<List<Comment>>(comments);
 
@@ -70,11 +84,86 @@ namespace OnlineForum.Core.Implementations
             var comment = _context.Comments.Include(x => x.Thread)
                                             .Include(x => x.Parent)
                                             .Include(x => x.User)
+                                            .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
                                             .FirstOrDefault(x => x.CommentId == commentId);
 
             if (comment == null) return null;
 
             return _mapper.Map<Comment>(comment);
+        }
+
+        public VoteResult Upvote(int commentId, int userId)
+        {
+            var comment = _context.Comments.Include(x => x.Thread)
+                                           .Include(x => x.Parent)
+                                           .Include(x => x.User)
+                                           .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
+                                           .FirstOrDefault(x => x.CommentId == commentId);
+
+            var user = _context.Users.First(x => x.UserId == userId);
+
+            var vote = comment.Votes.FirstOrDefault(x => x.VoteBy.UserId == user.UserId);
+
+            if (vote == null)
+            {
+                vote = new DAL.Entities.CommentVote
+                {
+                    VoteScore = 1,
+                    VoteBy = user
+
+                };
+
+                comment.Votes.Add(vote);
+            }
+            else
+            {
+                vote.VoteScore = vote.VoteScore == 1 ? 0 : 1;
+            }
+
+            _context.SaveChanges();
+
+            return new VoteResult()
+            {
+                Score = comment.Votes.Sum(x => x.VoteScore),
+                DidScoreIncrease = vote.VoteScore == 1,
+            };
+        }
+
+        public VoteResult Downvote(int commentId, int userId)
+        {
+            var comment = _context.Comments.Include(x => x.Thread)
+                                            .Include(x => x.Parent)
+                                            .Include(x => x.User)
+                                            .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
+                                            .FirstOrDefault(x => x.CommentId == commentId);
+
+            var user = _context.Users.First(x => x.UserId == userId);
+
+            var vote = comment.Votes.FirstOrDefault(x => x.VoteBy.UserId == user.UserId);
+
+            if (vote == null)
+            {
+                vote = new DAL.Entities.CommentVote
+                {
+                    VoteScore = -1,
+                    VoteBy = user
+
+                };
+
+                comment.Votes.Add(vote);
+            }
+            else
+            {
+                vote.VoteScore = vote.VoteScore == -1 ? 0 : -1;
+            }
+
+            _context.SaveChanges();
+
+            return new VoteResult()
+            {
+                Score = comment.Votes.Sum(x => x.VoteScore),
+                DidScoreIncrease = vote.VoteScore == 0
+            };
         }
     }
 }

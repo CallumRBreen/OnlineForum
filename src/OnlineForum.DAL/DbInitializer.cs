@@ -66,11 +66,17 @@ namespace OnlineForum.DAL
                 Thread = threads.First(),
                 User = user,
                 Content = "Top Comment",
-                Upvotes = 100,
-                Downvotes = 100,
                 Modified = DateTime.Now,
                 Created = DateTime.Now,
-                Parent = null
+                Parent = null,
+                Votes = new List<CommentVote>()
+                {
+                    new CommentVote()
+                    {
+                        VoteScore = 1,
+                        VoteBy = user
+                    }
+                }
             };
 
             context.Comments.Add(comment);
@@ -80,11 +86,17 @@ namespace OnlineForum.DAL
                 Thread = threads.First(),
                 User = user,
                 Content = "Top Comment Reply 1",
-                Upvotes = 150,
-                Downvotes = 150,
                 Modified = DateTime.Now,
                 Created = DateTime.Now,
-                Parent = comment
+                Parent = comment,
+                Votes = new List<CommentVote>()
+                {
+                    new CommentVote()
+                    {
+                        VoteScore = 1,
+                        VoteBy = user
+                    }
+                }
             };
 
             context.Comments.Add(commentTwo);
@@ -94,11 +106,17 @@ namespace OnlineForum.DAL
                 Thread = threads.First(),
                 User = user,
                 Content = "Top Comment Reply 2",
-                Upvotes = 150,
-                Downvotes = 150,
                 Modified = DateTime.Now,
                 Created = DateTime.Now,
-                Parent = comment
+                Parent = comment,
+                Votes = new List<CommentVote>()
+                {
+                    new CommentVote()
+                    {
+                        VoteScore = 1,
+                        VoteBy = user
+                    }
+                }
             };
 
             context.Comments.Add(commentThree);
@@ -108,11 +126,17 @@ namespace OnlineForum.DAL
                 Thread = threads.First(),
                 User = user,
                 Content = "Top Comment Reply 2 Reply 1",
-                Upvotes = 150,
-                Downvotes = 150,
                 Modified = DateTime.Now,
                 Created = DateTime.Now,
-                Parent = commentThree
+                Parent = commentThree,
+                Votes = new List<CommentVote>()
+                {
+                    new CommentVote()
+                    {
+                        VoteScore = 1,
+                        VoteBy = user
+                    }
+                }
             };
 
             context.Comments.Add(commentFour);

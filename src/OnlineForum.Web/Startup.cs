@@ -92,10 +92,6 @@ namespace OnlineForum.Web
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "Comments",
-                    template: "Comments/{threadId}",
-                    defaults: new { controller = "Comments", action = "Index" });
 
                 routes.MapRoute(
                     name: "Users",

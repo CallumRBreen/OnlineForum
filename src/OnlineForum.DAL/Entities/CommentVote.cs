@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OnlineForum.Core.Models
+namespace OnlineForum.DAL.Entities
 {
-    public class ThreadVote
+    public class CommentVote
     {
-        public int ThreadVoteId { get; set; }
+        public int CommentVoteId { get; set; }
         public int VoteScore { get; set; }
 
         public User VoteBy { get; set; }
