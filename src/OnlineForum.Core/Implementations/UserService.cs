@@ -88,16 +88,20 @@ namespace OnlineForum.Core.Implementations
 
         public IEnumerable<Thread> GetUserThreads(int userId)
         {
-            var threads = _context.Threads.Include(u => u.User).Where(x => x.User.UserId == userId);
+            var threads = _context.Threads.Include(u => u.User)
+                                          .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
+                                          .Where(x => x.User.UserId == userId);
 
             return _mapper.Map<IEnumerable<Thread>>(threads);
         }
 
-        public IEnumerable<Comment> GetUserComments(int userId)
+        public IEnumerable<CommentNode> GetUserComments(int userId)
         {
-            var threads = _context.Comments.Include(u => u.User).Where(x => x.User.UserId == userId);
+            var comments = _context.Comments.Include(u => u.User)
+                                           .Include(v => v.Votes).ThenInclude(u => u.VoteBy)
+                                           .Where(x => x.User.UserId == userId);
 
-            return _mapper.Map<IEnumerable<Comment>>(threads);
+            return _mapper.Map<IEnumerable<Comment>>(comments).Select(x => new CommentNode {Comment = x, ChildComments = new List<CommentNode>()});
         }
     }
 }

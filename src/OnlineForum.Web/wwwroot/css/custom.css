@@ -33,9 +33,23 @@ h1 {
     padding-bottom: 5px;
 }
 
-.ratingSection {
+.threadRatingSection {
     width: 60px;
     text-align: center;
+}
+
+.commentRatingSection {
+    text-align: center;
+    width: 0px;
+    margin-left: 10px;
+}
+
+.commentMainSection {
+    padding-left: 4px;
+}
+
+.commentUpvoteButton {
+    margin-bottom: 2px;
 }
 
 .commentHeader {

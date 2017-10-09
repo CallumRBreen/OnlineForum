@@ -13,6 +13,6 @@ namespace OnlineForum.Core.Interfaces
         CreateUserResponse CreateUser(string username, string password, string email);
         User SignIn(string username, string password);
         IEnumerable<Thread> GetUserThreads(int userId);
-        IEnumerable<Comment> GetUserComments(int userId);
+        IEnumerable<CommentNode> GetUserComments(int userId);
     }
 }

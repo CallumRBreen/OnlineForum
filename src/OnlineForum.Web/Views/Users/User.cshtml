@@ -5,10 +5,7 @@
 }
 
 
-@* This page will be composed of view components *@
-
-<p>@Model.User.UserId</p>
-<p>@Model.User.UserName</p>
+<h2>@Model.User.UserName Overview</h2>
 
 <h3>Posts</h3>
 
@@ -19,9 +16,9 @@
 
 <h3>Comments</h3>
 
-@foreach (var comment in @Model.Comments)
+@foreach (var commentNode in @Model.Comments)
 {
-    <p>@comment.Content</p>
+    @await Component.InvokeAsync("Comment", new { commentNode, ShowFullContent = false })
 }
 
 

@@ -10,6 +10,6 @@ namespace OnlineForum.Web.ViewModels.Users
     {
         public User User { get; set; }
         public IEnumerable<Core.Models.Thread> Threads { get; set; }
-        public IEnumerable<Core.Models.Comment> Comments { get; set; }
+        public IEnumerable<Core.Models.CommentNode> Comments { get; set; }
     }
 }

@@ -56,7 +56,7 @@ namespace OnlineForum.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.Authentication.SignOutAsync("CookieAuthentication");
-            return RedirectToAction("Login");
+            return RedirectToAction("Index","Forum");
         }
 
         [HttpGet]
